@@ -29,6 +29,16 @@
 Wir haben einen Tabelle mit 10 Attributen von verschiedenen Tweets aus der America Election von 2016. Jede Tupel beschreibt genau von wem war den Tweet gepostet? was war die Nachricht von diesem Tweet war diesem Tweets weitergeleitet? war die Authenticität von dem Tweet gut(Das heißt ob der Tweet von diese Person ,der gepostet hat geschrieben war?
 
 \end{enumerate}
+
+\section{Aufgabe: ER-Modelierung}
+
+\section{Aufgabe: Relationales Modell}
+
+\begin{verbatim}
+Tweet(Handle :: char(20), Text :: char(200), Time :: Date, Favourites :: int, Retweets :: int, Rating :: int, Count :: int, OriginalAuthor :: char(20), replyTo :: char(20), isRetweet :: bool, isQuote :: bool, isTruncated :: bool, sourceUrl :: char(100) )
+\end{verbatim}
+
+\section{Aufgabe: Datenbank erstellen}
 	
 
 % /////////////////////// END DOKUMENT /////////////////////////
