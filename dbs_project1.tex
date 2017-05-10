@@ -1,4 +1,5 @@
 \input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
 
 \newcommand{\dozent}{Prof.  Dr.  Agnès Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
 \newcommand{\tutor}{Hoffman Christian}						% <-- Name eurer Tutoriun eintragen
@@ -28,15 +29,45 @@
 \item{Beschreibung von der Datensatz}
 Wir haben einen Tabelle mit 10 Attributen von verschiedenen Tweets aus der America Election von 2016. Jede Tupel beschreibt genau von wem war den Tweet gepostet? was war die Nachricht von diesem Tweet war diesem Tweets weitergeleitet? war die Authenticität von dem Tweet gut(Das heißt ob der Tweet von diese Person ,der gepostet hat geschrieben war?
 
+Zusätzlich gibt es auch manche Tweets, die 'truncated' worden sind. Das heißt, dass die ein zitiertes Tweet oder irgendwelche Media enthalten, deswegen überschritten sie das Twitter Zeichenlimit und werden abgeschnitten. 
+
 \end{enumerate}
 
 \section{Aufgabe: ER-Modelierung}
+
+Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidung getroffen. Wir glauben, dass dieses Modell das beste für unsere Vorstellung des Projekts ist.
+
+\textbf{Probleme und Lösungen}\\
+
+\begin{itemize}
+ \item Um 'Welche Hashtags werden am meistens verwendet' zu beantworten, muss man für jeden Hashtag überprüfen, in welchen Tweets er vorkommt und dann diese aufzählen. Deswegen haben wir uns entschieden, in dem Hashtah Entitätstyp ein Attribut TotalCount zu speicher. So werden wir auch weniger Server-Anfragen bearbeiten müssen.
+ 
+ \item Der Datenumfang ist über mehreren Monaten. Um die Fragen 'Wann traten insgesammt am meisten Hashtags auf?' und 'Wie hat sich die Häufigkeit der Verwendung eines speziellen Hashtags im Laufe der Zeit entwickelt?' zu beantworten müssen wir jeden Tweet zu einem zeitlichen Bereich zuordnen. 
+ 
+ Wir haben uns deswegen entschieden, einen Entitätstyp 'Week' zu haben, wo wir an einer Woche benutzten Hashtags speichern werden. (Natürlich auch einen Attribut "Count" für höhere effizienz verwenden)
+ 
+ \item Unserer Meinung nach, wäre eine Metrik für wichtige Tweets die Summe von Retweets und Favourites. So haben wir einen Attribut 'Rating', der nach der folgende Schema berechnet wird;
+ 
+ \begin{center}
+ $retweets*weight_1 + favourites*weight_2 = rating$ 
+ \end{center}
+ 
+ wobei $weight_1$ und $weight_2$ später genau bestimmt werden.
+
+ \item Es wird ziemlich aufwändig herauszufinden, welche Paar von Hashtags am häufigsten gemeinsam auftritt, weil wir über alle Tweets iterieren müssen. Deswegen haben wir eine N:M rekursive Relation auf 'Hashtag' erstellt.
+ 
+ \item Eigentlich haben wir zu fast jedem Entitätstyp einen Attribut 'count' hinzugefügt, weil die Berechnung von Anzahl viel einfacher zu Parse-Zeit wäre, als jedes mal eine Anfrage zu machen, und dann alle verschiedene Entitäten aufzuzählen.
+ 
+\end{itemize}
+
+\vspace{1cm}
+\includegraphics[width=\textwidth]{ERDiagramm.png}
 
 \newpage
 
 \section{Aufgabe: Relationales Modell}
 
-Wir haben uns entschieden die Relation zwischen Tweet und Week nicht zu erstellen, weil wir glauben, dass es keinen Sinn macht.
+Nachdem wir die ER-Relation hatten, war es einfach das relationale Modell zu erstellen. Es kann sein, dass OriginalAuthor, ReplyTo und isQuote für uns nicht relevant sind.
 
 \begin{verbatim}
 Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, Favourites :: int, 

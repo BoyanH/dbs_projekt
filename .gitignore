@@ -2,3 +2,6 @@
 *.out
 *.log
 *.synctex.gz
+*.backup
+*.~lock*
+*.swp
