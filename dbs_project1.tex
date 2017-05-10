@@ -32,10 +32,23 @@ Wir haben einen Tabelle mit 10 Attributen von verschiedenen Tweets aus der Ameri
 
 \section{Aufgabe: ER-Modelierung}
 
+\newpage
+
 \section{Aufgabe: Relationales Modell}
 
+Wir haben uns entschieden die Relation zwischen Tweet und Week nicht zu erstellen, weil wir glauben, dass es keinen Sinn macht.
+
 \begin{verbatim}
-Tweet(Handle :: char(20), Text :: char(200), Time :: Date, Favourites :: int, Retweets :: int, Rating :: int, Count :: int, OriginalAuthor :: char(20), replyTo :: char(20), isRetweet :: bool, isQuote :: bool, isTruncated :: bool, sourceUrl :: char(100) )
+Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, Favourites :: int, 
+    Retweets :: int, Rating :: int, Count :: int, OriginalAuthor :: char(20), replyTo :: char(20), 
+    isRetweet :: bool, isQuote :: bool, isTruncated :: bool, sourceUrl :: char(100) )
+Hashtag(ID:: int, Text :: char(30), TotalCount :: int)
+Week(ID:: int, StartDate :: Date, EndDate :: Date)
+
+HashtagTweet(Tweet.ID, Hashtag.ID)
+WeeklyHashtag(Week.ID, Hashtag.ID, Count :: int)
+HashtagPairs(HT1.ID, HT2.ID)
+
 \end{verbatim}
 
 \section{Aufgabe: Datenbank erstellen}
