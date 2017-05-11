@@ -22,25 +22,32 @@ Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
 Das Team: Emil Milanov, Boyan Hristov, Ingrid Tchilibou\\
 Wir sind alle Bachelor Informatik Studenten im 4. Semester.
 
+\textbf{Proketziel}\\
+Unserer Meinung nach hat dieses Projekt als Ziel Verhältnisse zwischen Tweets und Hashtags oder zwischen Paaren von Hashtag zu 
+analysieren und auch grafisch darzustellen. Laut der Aufgabenstellung soll das eine Web-Anwendung sein, was wir uns merken 
+müssen, ist aber in der ersten Projektiteration nicht wichtig. 
+
+
+\textbf{Aufgabenverteilung}\\
 Alle drei von uns haben gründlich das ER Modell besprochen und mit Aufmerksamkeit eine Eintscheidung getroffen. Ingrid hat zusätzlich die Daten gründlich analysiert, Emil und Ingrid haben das relationales Modell erstellt und Boyan hat die Datenbank mithilfe von Postgres erstellt und eine möglichkeit gefunden, eine Dumpdetei zu erstellen, als Beweis, dass wir eine Datenbank fertig haben. Zusätzlich haben Emil und Ingrid die Dokumentationn verfasst.
 
 
 
 % ///////////////////// Aufgabe 2 ///////////////////
 \section{Aufgabe:Explorative Datenanalyse}
-Beschreibung von der Datensatz
 
-Wir haben einen Tabelle mit 10 Attributen von verschiedenen Tweets aus der America Election von 2016.\\
-Jede Tupel beschreibt genau :\\
-Von wem war den Tweet gepostet?Dafuer gibt es den Attribut {\itshape Handle}\\
-Was war die Nachricht von diesem Tweet? Dafuer ist den Attribut {\itshape Text}\\
-War die Authenticität von dem Tweet verletz(Das heißt ob der Tweet ,der gepostet wird ,war von diesem Person geschrieben)? 
-dafuer wird den Attribute Original Author erstelt
-Außerdem hat jeder Tweet einen {\itshape Source-url} als Attribute(D.h Wohin  wurde den tweet erstellen)\\
-Wie viel war  diesem Tweet weitergeleitet?  {\itshape retweet-count}\\
-Wie viel mal war diesem Tweet "gelikt" {\itshape favorite-count }?\\
+Wir haben eine Tabelle mit 10 Attributen von verschiedenen Tweets von der 2016 America Election.\\
+Jeder Tupel beschreibt genau :\\
 
-Andereseite gibt auch Tweet die ein Titat hat,um zu sagen das 2Tweets von verschiedenen author zusammengefasst werden {\itshape is-quote status}\\
+Von wem wurde den Tweet gepostet? Dafür gibt es den Attribut {\itshape Handle}\\
+Was war die Nachricht / Inhalt von diesem Tweet? Dafür ist den Attribut {\itshape Text}\\
+Manche posts von Trump und Clinton waren eigentlich Retweets von Tweets von anderen Personen.
+Dafür wird den Attribut Original Author erstelt.
+Außerdem hat jeder Tweet einen {\itshape Source-url} als Attribut (D.h Was für ein Platform oder Gerät benutzt wurde, um den Tweet zu veröffentlichen)\\
+Wie häufig wurde diesen Tweet weitergeleitet?  {\itshape retweet-count}\\
+Wie häufig wurde diesen Tweet \"geliked\" oder gespeichert. {\itshape favorite-count }?\\
+
+Außerdem gibt es Tweets, die ein Zitat enthalten. Dieses Zität wird als Anhang im Browser angezeigt, aber wird nicht vom API genommen. Solche Tweets sind auch truncated oder abgeschnitten. {\itshape is-quote status}\\
 Zusätzlich gibt es auch manche Tweets, die 'truncated' worden sind. Das heißt, dass die ein zitiertes Tweet oder irgendwelche Media enthalten, deswegen überschritten sie das Twitter Zeichenlimit und werden abgeschnitten.\\ 
 
 \section{Aufgabe: ER-Modelierung}
@@ -73,11 +80,23 @@ Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidun
 \vspace{1cm}
 \includegraphics[width=\textwidth]{ERDiagramm.png}
 
-\newpage
-
 \section{Aufgabe: Relationales Modell}
 
-Nachdem wir die ER-Relation hatten, war es einfach das relationale Modell zu erstellen. Es kann sein, dass wir nicht alle Attributen brauchen, oder nicht genug Attributen haben, da aber wir noch keine Daten im Datenbank haben, wäre es einfach, die Schema anzupassen.
+Nachdem wir die ER Diagramm hatten, war es einfach ein relationelles Modell zu erstellen. Aufgrund der Aufgabestellung 
+und unsere Interpretation, sind nicht alle Attribute aus der .csv Datei für uns Relevant. Im 3. Teil der Proketdokumentation
+sind unsere Probleme, Lösungen und Entscheidungen um den Entitätstypen und deren Attributen zu sehen. Trotzdem war es 
+für uns sehr einfach ein relationelles Modell zu erstellen.
+
+Einige Entscheidungen, die wir bei der Erstellung des relationellen Modell treffen müssten waren z.B in welcher Tabelle die 
+verschiedene 'Count' Attributen sein müssen.
+
+Unsere Haupttabellen sind TWEET, HASHTAG und WEEK, jede von denen einen ID Attribut hat, und HASHTAG.Text wird nur kleine 
+Buchstaben haben. 
+
+Wir vermuten auc zum Beispiel, dass Hashtags maximal 30 Zeichen lang sind. Natürlich gibt es längere Hashtags, aber wir glauben 
+dass Trump und Clinton keine solche Hashtags verwenden. Für Handle brauchen wir nicht mehr als 20 Zeichen. Normalerweise sind 
+Tweets maximal 200 Zeichen lang, es gibt aber manche, die Truncated worden sind und es zusätzlich eine Link enthalten, was 
+die Grenze überschritten kann. Deswegen haben wir uns entschieden 200 Zeichen für jeden Tweet zu speichern.
 
 \begin{verbatim}
 Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, 
@@ -96,7 +115,12 @@ HashtagPairs(HT1.ID, HT2.ID)
 \end{verbatim}
 
 \section{Aufgabe: Datenbank erstellen}
-	
+Wir sind nicht sicher wie wir beweisen können, dass wir die Datenbank erstellt haben, deswegen wenn man den Link öffnet, 
+sind ein paar Screenshots zu finden. Außerdem steht im Github-repo eine .sql Datei, wo mann alle bei der Erstellung der Datenbank
+ausgeführte Anweisungen finden kann. 
+
+Trotzdem, nachdem wir ein relationales Modell hatten, war es einfach die Datenbank zu erstellen. Das schwierigste bei diesem Teil
+der Aufgabe war zu lernen, wie man mit Postgres umgeht.
 
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}
