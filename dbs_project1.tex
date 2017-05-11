@@ -17,7 +17,12 @@
 
 % /////////////////////// Aufgabe 1 /////////////////////////
 \section{Aufgabe: Projektdokumentation}
-{\itshape Aufgabenstellung des Dozenten}
+Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
+
+Das Team: Emil Milanov, Boyan Hristov, Ingrid Tchilibou\\
+Wir sind alle Bachelor Informatik Studenten im 4. Semester.
+
+Alle drei von uns haben gründlich das ER Modell besprochen und mit Aufmerksamkeit eine Eintscheidung getroffen. Ingrid hat zusätzlich die Daten gründlich analysiert, Emil und Ingrid haben das relationales Modell erstellt und Boyan hat die Datenbank mithilfe von Postgres erstellt und eine möglichkeit gefunden, eine Dumpdetei zu erstellen, als Beweis, dass wir eine Datenbank fertig haben. Zusätzlich haben Emil und Ingrid die Dokumentationn verfasst.
 
 
 
@@ -67,18 +72,21 @@ Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidun
 
 \section{Aufgabe: Relationales Modell}
 
-Nachdem wir die ER-Relation hatten, war es einfach das relationale Modell zu erstellen. Es kann sein, dass OriginalAuthor, ReplyTo und isQuote für uns nicht relevant sind.
+Nachdem wir die ER-Relation hatten, war es einfach das relationale Modell zu erstellen. Es kann sein, dass wir nicht alle Attributen brauchen, oder nicht genug Attributen haben, da aber wir noch keine Daten im Datenbank haben, wäre es einfach, die Schema anzupassen.
 
 \begin{verbatim}
-Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, Favourites :: int, 
-    Retweets :: int, Rating :: int, Count :: int, OriginalAuthor :: char(20), replyTo :: char(20), 
-    isRetweet :: bool, isQuote :: bool, isTruncated :: bool, sourceUrl :: char(100) )
+Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, 
+    Rating :: int, Count :: int, replyTo :: char(20), 
+    isRetweet :: bool, isQuote :: bool, isTruncated :: bool )
+    
 Hashtag(ID:: int, Text :: char(30), TotalCount :: int)
 Week(ID:: int, StartDate :: Date, EndDate :: Date)
 
 HashtagTweet(Tweet.ID, Hashtag.ID)
 WeeklyHashtag(Week.ID, Hashtag.ID, Count :: int)
+WeeklyTweers(Week.ID , Hashtag.ID)
 HashtagPairs(HT1.ID, HT2.ID)
+
 
 \end{verbatim}
 
