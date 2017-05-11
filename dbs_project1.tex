@@ -22,14 +22,14 @@ Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
 Das Team: Emil Milanov, Boyan Hristov, Ingrid Tchilibou\\
 Wir sind alle Bachelor Informatik Studenten im 4. Semester.
 
-\textbf{Proketziel}\\
+\textbf{Proektziel}\\
 Unserer Meinung nach hat dieses Projekt als Ziel Verhältnisse zwischen Tweets und Hashtags oder zwischen Paaren von Hashtag zu 
 analysieren und auch grafisch darzustellen. Laut der Aufgabenstellung soll das eine Web-Anwendung sein, was wir uns merken 
 müssen, ist aber in der ersten Projektiteration nicht wichtig. 
 
 
 \textbf{Aufgabenverteilung}\\
-Alle drei von uns haben gründlich das ER Modell besprochen und mit Aufmerksamkeit eine Eintscheidung getroffen. Ingrid hat zusätzlich die Daten gründlich analysiert, Emil und Ingrid haben das relationales Modell erstellt und Boyan hat die Datenbank mithilfe von Postgres erstellt und eine möglichkeit gefunden, eine Dumpdetei zu erstellen, als Beweis, dass wir eine Datenbank fertig haben. Zusätzlich haben Emil und Ingrid die Dokumentationn verfasst.
+Alle drei von uns haben gründlich das ER Modell besprochen und mit Aufmerksamkeit eine Eintscheidung getroffen. Ingrid hat zusätzlich die Daten gründlich analysiert, Emil und Ingrid haben das relationales Modell erstellt und Boyan hat das ER Modell gezeichnet und bereinigt, die Datenbank mithilfe von Postgres erstellt und eine Möglichkeit gefunden, eine Dumpdetei zu erstellen, als Beweis, dass wir eine Datenbank fertig haben. Zusätzlich haben Emil und Ingrid die Dokumentationn verfasst.
 
 
 
@@ -50,6 +50,10 @@ Wie häufig wurde diesen Tweet \"geliked\" oder gespeichert. {\itshape favorite-
 Außerdem gibt es Tweets, die ein Zitat enthalten. Dieses Zität wird als Anhang im Browser angezeigt, aber wird nicht vom API genommen. Solche Tweets sind auch truncated oder abgeschnitten. {\itshape is-quote status}\\
 Zusätzlich gibt es auch manche Tweets, die 'truncated' worden sind. Das heißt, dass die ein zitiertes Tweet oder irgendwelche Media enthalten, deswegen überschritten sie das Twitter Zeichenlimit und werden abgeschnitten.\\ 
 
+Für uns wären {\itshape text}, {\itshape handle}, {\itshape time}, {\itshape retweet-count} und {\itshape favourite-count} besonders wichtig, da man mit diesen Daten alle von den gegebenen möglichen Anfragen bearbeiten kann. Das Attribut {\itshape text} enthält alle HashTags und es gibt leider kein anderes Attribut dazu, deswegen werden wir die HashTags von diesem Attribut nehmen. Wie schon erwähnt, müssen wir hier auf das Attribut {\itshape truncated} aufpassen. \\
+
+Für die Wichtigkeit des Tweets könnte im unseren Fall auch wichtig sein, ob Trump oder Clinton Tweets weitergeleitet haben. Dafür ist das Attribut {\itshape  original author}. Öftmals sind das Tweets mit 'trending' Messages/Aussagen. 
+
 \section{Aufgabe: ER-Modelierung}
 
 Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidung getroffen. Wir glauben, dass dieses Modell das beste für unsere Vorstellung des Projekts ist.
@@ -57,7 +61,7 @@ Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidun
 \textbf{Probleme und Lösungen}\\
 
 \begin{itemize}
- \item Um 'Welche Hashtags werden am meistens verwendet' zu beantworten, muss man für jeden Hashtag überprüfen, in welchen Tweets er vorkommt und dann diese aufzählen. Deswegen haben wir uns entschieden, in dem Hashtah Entitätstyp ein Attribut TotalCount zu speicher. So werden wir auch weniger Server-Anfragen bearbeiten müssen.
+ \item Um 'Welche Hashtags werden am meistens verwendet' zu beantworten, muss man für jeden Hashtag überprüfen, in welchen Tweets er vorkommt und dann diese aufzählen. Deswegen haben wir uns entschieden, in dem Hashtah Entitätstyp ein Attribut TotalCount zu speichern. So werden wir auch weniger Server-Anfragen bearbeiten müssen.
  
  \item Der Datenumfang ist über mehreren Monaten. Um die Fragen 'Wann traten insgesammt am meisten Hashtags auf?' und 'Wie hat sich die Häufigkeit der Verwendung eines speziellen Hashtags im Laufe der Zeit entwickelt?' zu beantworten müssen wir jeden Tweet zu einem zeitlichen Bereich zuordnen. 
  
@@ -83,31 +87,31 @@ Alle drei von uns haben dieses Modell gründlich besprochen und eine Entscheidun
 \section{Aufgabe: Relationales Modell}
 
 Nachdem wir die ER Diagramm hatten, war es einfach ein relationelles Modell zu erstellen. Aufgrund der Aufgabestellung 
-und unsere Interpretation, sind nicht alle Attribute aus der .csv Datei für uns Relevant. Im 3. Teil der Proketdokumentation
+und unsere Interpretation, sind nicht alle Attribute aus der .csv Datei für uns Relevant. Im 3. Teil der Projektdokumentation
 sind unsere Probleme, Lösungen und Entscheidungen um den Entitätstypen und deren Attributen zu sehen. Trotzdem war es 
 für uns sehr einfach ein relationelles Modell zu erstellen.
 
-Einige Entscheidungen, die wir bei der Erstellung des relationellen Modell treffen müssten waren z.B in welcher Tabelle die 
+Einige Entscheidungen, die wir bei der Erstellung des relationalen Modell treffen müssten waren z.B in welcher Tabelle die 
 verschiedene 'Count' Attributen sein müssen.
 
 Unsere Haupttabellen sind TWEET, HASHTAG und WEEK, jede von denen einen ID Attribut hat, und HASHTAG.Text wird nur kleine 
 Buchstaben haben. 
 
-Wir vermuten auc zum Beispiel, dass Hashtags maximal 30 Zeichen lang sind. Natürlich gibt es längere Hashtags, aber wir glauben 
+Wir vermuten auch zum Beispiel, dass Hashtags maximal 40 Zeichen lang sind. Natürlich gibt es längere Hashtags, aber wir glauben 
 dass Trump und Clinton keine solche Hashtags verwenden. Für Handle brauchen wir nicht mehr als 20 Zeichen. Normalerweise sind 
 Tweets maximal 200 Zeichen lang, es gibt aber manche, die Truncated worden sind und es zusätzlich eine Link enthalten, was 
 die Grenze überschritten kann. Deswegen haben wir uns entschieden 200 Zeichen für jeden Tweet zu speichern.
 
 \begin{verbatim}
-Tweet(ID :: int, Handle :: char(20), Text :: char(200), Time :: Date, 
-    Rating :: int, Count :: int, replyTo :: char(20), 
-    isRetweet :: bool, isQuote :: bool, isTruncated :: bool )
+Tweet(ID :: integer, Handle :: character varying(20), Text :: character varying(200), Time :: date, 
+    Rating :: integer, Count :: integer, replyTo :: character varying(20), 
+    isRetweet :: boolean, isQuote :: boolean, isTruncated :: boolean )
     
-Hashtag(ID:: int, Text :: char(30), TotalCount :: int)
-Week(ID:: int, StartDate :: Date, EndDate :: Date)
+Hashtag(ID:: integer, Text :: char varying(40), TotalCount :: integer)
+Week(ID:: integer, StartDate :: date, EndDate :: date)
 
 HashtagTweet(Tweet.ID, Hashtag.ID)
-WeeklyHashtag(Week.ID, Hashtag.ID, Count :: int)
+WeeklyHashtag(Week.ID, Hashtag.ID, Count :: integer)
 WeeklyTweers(Week.ID , Hashtag.ID)
 HashtagPairs(HT1.ID, HT2.ID)
 
@@ -121,6 +125,29 @@ ausgeführte Anweisungen finden kann.
 
 Trotzdem, nachdem wir ein relationales Modell hatten, war es einfach die Datenbank zu erstellen. Das schwierigste bei diesem Teil
 der Aufgabe war zu lernen, wie man mit Postgres umgeht.
+
+Wir haben alle Tabellen, als auch die Relationen dazwischen erstellt. Falls das aber nicht notwendig ist, hier sind die notwendige Befehle, die wir ausgeführt haben, um unsere Datenbank zu erstellen aus dem Arch Linux wiki:
+
+sudo -u postgres -i
+initdb --locale \$LANG -E UTF8 -D '/var/lib/postgres/data' \\
+
+Das wechselt zu dem default postgre Nutzer und erstellt den Datenbank cluster \\
+
+createuser --interactive hristov \\
+
+Das erstellt ein postgresql Nutzer. Hier ist es klever das selbe Nutzername als das eigene auf dem Rechner zu nutzen um Authentifizierung zu erleichtern. \\
+
+createdb Election \\
+
+Das erstellt ein Datenbank mit dem Namen 'Election' \\
+
+psql -d Election \\
+
+So geht man in dem Shell von dem Datenbank rein. Danach kann man SQL Befehle benutzen um 
+Tabellen zu erstellen, Daten aufzurufen und im großen und ganzen alles was man sonst mit SQL machen darf. Am Ende kann man auch die für die Erstellung benutze Befehle exportieren und das ganze Datenbank migrieren. Das haben wir auch als Beweis gemacht.
+
+pg\_dump Election > Election.sql
+
 
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}
