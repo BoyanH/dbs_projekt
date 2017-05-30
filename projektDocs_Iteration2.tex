@@ -1,0 +1,46 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{listings} % inline code snippets
+
+\newcommand{\dozent}{Prof.  Dr.  Agnès Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Hoffman Christian}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{Tutorium 3}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{2.Iteration}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Datenbank Systeme}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
+\newcommand{\studenten}{Ingrid Tchilibou, Emil Milanov, Boyan Hristov}			% <-- Hier eure Namen eintragen
+
+
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+\section*{Allgemein}
+Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
+
+\section*{1.Aufgabe: Datenbankschema erstellen}
+
+
+\section*{2.Aufgabe:Datenbereinigung}
+
+
+\section*{3.Aufgabe: Datenimport}
+
+
+\section*{4.Aufgabe: Webserver}
+
+Wir haben uns für ein Apache Webserver entschieden. Da zwei von uns eine Arch-basierte Linux Distribution haben, haben wir so den Webserver konfiguriert.
+
+Die config-Datei bedindet sich am Archlinux-Distributionen hier: 
+\lstinline|/etc/httpd/conf/httpd.conf|
+
+Dort haben wir die \lstinline|Listen 80| zu \lstinline|Listen 127.0.0.1:5234| verändert, damit der Webserver Verbindungen nur am Port 5234 nur vom lokalen Rechner akzeptiert.
+
+Schließlich haben wir eine test \lstinline|index.html| Datei in \lstinline|/srv/http| hinzugefügt um den Webserver zu testen.
+
+
+
+
+\end{document}
