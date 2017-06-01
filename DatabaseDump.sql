@@ -40,7 +40,7 @@ SET default_with_oids = false;
 
 CREATE TABLE contains (
     count integer,
-    tweetid integer NOT NULL,
+    tweetid bigint NOT NULL,
     hashtagtext character varying(40) NOT NULL
 );
 
@@ -64,7 +64,7 @@ ALTER TABLE hashtag OWNER TO postgres;
 --
 
 CREATE TABLE postedin (
-    tweetid integer NOT NULL,
+    tweetid bigint NOT NULL,
     weekstartdate date NOT NULL
 );
 
@@ -80,7 +80,7 @@ CREATE TABLE tweet (
     text text NOT NULL,
     "time" date NOT NULL,
     rating real,
-    id smallint NOT NULL
+    id bigint NOT NULL
 );
 
 
@@ -126,7 +126,8 @@ ALTER TABLE usedin OWNER TO postgres;
 
 CREATE TABLE usedtogetherwith (
     primaryhashtag character varying(40) NOT NULL,
-    togetherwithhashtag character varying(40) NOT NULL
+    togetherwithhashtag character varying(40) NOT NULL,
+    count integer
 );
 
 
@@ -143,13 +144,6 @@ CREATE TABLE week (
 
 
 ALTER TABLE week OWNER TO postgres;
-
---
--- Name: tweet id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY tweet ALTER COLUMN id SET DEFAULT nextval('tweet_id_seq'::regclass);
-
 
 --
 -- Data for Name: contains; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -202,7 +196,7 @@ COPY usedin (count, hashtagtext, weekstartdate) FROM stdin;
 -- Data for Name: usedtogetherwith; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY usedtogetherwith (primaryhashtag, togetherwithhashtag) FROM stdin;
+COPY usedtogetherwith (primaryhashtag, togetherwithhashtag, count) FROM stdin;
 \.
 
 
