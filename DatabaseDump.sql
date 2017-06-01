@@ -39,7 +39,6 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE contains (
-    count integer,
     tweetid bigint NOT NULL,
     hashtagtext character varying(40) NOT NULL
 );
