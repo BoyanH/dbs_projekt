@@ -4,7 +4,7 @@
 
 \newcommand{\dozent}{Prof.  Dr.  Agnès Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
 \newcommand{\tutor}{Hoffman Christian}						% <-- Name eurer Tutoriun eintragen
-\newcommand{\tutoriumNo}{Tutorium 3}				% <-- Nummer im KVV nachschauen
+\newcommand{\tutoriumNo}{ 3, Gruppe 22}				% <-- Nummer im KVV nachschauen
 \newcommand{\projectNo}{2.Iteration}									% <-- Nummer des Übungszettels
 \newcommand{\veranstaltung}{Datenbank Systeme}	% <-- Name der Lehrveranstaltung eintragen
 \newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
@@ -20,27 +20,49 @@
 \section*{Allgemein}
 Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
 
+Die letzte Iteration hatten wir ein paar 'Count' Attributen addiert, wir haben aber uns später entschieden, dass wir sie nicht brauchen. Diese Iteration, aber haben wir bemerkt, dass wir eigenltich diese Attribute brauchen.
+
 \section*{1.Aufgabe: Datenbankschema erstellen}
+
 
 
 \section*{2.Aufgabe:Datenbereinigung}
 
+Nach tiefere Datenanalyse haben wir zwei Hauptprobleme identifiziert:
+
+1. Manche Tweets sind abgeschnitten und ein Teil von denen sind 'Truncated'. Wir wussten aber nicht, wie wir schnell die Tweets rekonstruiren können. Deswegen haben wir die gezählt und haben festgestellt, dass nur 2\% der Tweets abgeschnitten sind. Es wäre für uns am leichtesten, alle solchen Tweets einfach zu löschen.
+
+Wir haben bemerkt, dass alle abgeschnittenen Tweets auf '...' dann einen Link endeten. Es ist aber herausgekommen, dass '...' in solchen Tweets nur einen Unicode Zeichen war.  Deswegen müssten wir im Python Program überprüfen, ob der Zeichen \textit{$u'\backslash u2026'$} im Körper des Tweets vorkommt.
+
+2. Die vorgegebene Einstellungen der Libre Office Calculator hat versucht mit Codierung 'UTF-8' geöffnet. Dann gab es aber Probleme mit manchen Symbolen. Apostrophe, manche Sonderzeichen und vermutlich auch Emojis wurden nicht angezeigt. Nach kurze Analyse haben wir festgestellt, dass wenn wir die Tabelle mit Codierung 'Windows 1252' öffnen, werden Apostrophen und wichtige Sonderzeichen normal dargestellt, und Emojis und nicht für den Datensatz relevante Zeichen wurden gelöscht.
+
+Die Python Program war sehr einfach. Wir haben die Standartbibliothek 'csv' benutzt um ein $csv_writer$ und $csv_reader$ zu erzeugen. Wir haben dann die .csv Datei gelesen, und Zeile für Zeile haben wir geprüft ob der Tweet Truncated ist, oder abgeschnitten ist. Wenn nicht, haben wir den Tweet in einer anderen Datei \textit{test.csv} gespeichert. 
 
 \section*{3.Aufgabe: Datenimport}
 
 
 \section*{4.Aufgabe: Webserver}
 
-Wir haben uns für ein Apache Webserver entschieden. Da zwei von uns eine Arch-basierte Linux Distribution haben, haben wir so den Webserver konfiguriert.
+Wir haben uns entschieden selbe einen Webserver zu entwickeln und zwar wollten wir die 'Flask' Framework von Python zu verwenden. Die Installation war sehr einfach, und es ist sehr einfach ein kurzes Programm zu entwickeln.
 
-Die config-Datei bedindet sich am Archlinux-Distributionen hier: 
-\lstinline|/etc/httpd/conf/httpd.conf|
+\begin{verbatim}
+from flask import Flask
 
-Dort haben wir die \lstinline|Listen 80| zu \lstinline|Listen 127.0.0.1:5234| verändert, damit der Webserver Verbindungen nur am Port 5234 nur vom lokalen Rechner akzeptiert.
+app = Flask(__name__)
+port = 5234
+host = '127.0.0.1'
 
-Schließlich haben wir eine test \lstinline|index.html| Datei in \lstinline|/srv/http| hinzugefügt um den Webserver zu testen.
+@app.route('/')
+def index():
+    return 'Hello world'
 
+if __name__ == '__main__':
+    app.run(debug=True, host=host, port=port)
+\end{verbatim}
+Das Programm erzeugt einen einfachen Webserver auf Port 5234. Wenn man die Seite 
+\textit{localhost:5234} öffnet, dann sieht man unformatiert 'Hello world'.
 
+Es wäre sehr einfach das zu erweitern. Wir können .html Dateis im selben ordner legen, und dann neue Wege mit \textit{@app.route()} definieren. Vielleicht werden wir die Programme für Hashtag-analyse in den Server einbauen, damit wir dynamisch den Inhalt anpassen können.
 
 
 \end{document}
