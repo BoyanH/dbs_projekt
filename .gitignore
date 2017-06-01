@@ -5,4 +5,4 @@
 *.backup
 *.~lock*
 *.swp
-**/__*/*
+programs/__pycache__
