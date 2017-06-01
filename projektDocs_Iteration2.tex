@@ -20,13 +20,32 @@
 \section*{Allgemein}
 Link zum Projekt: \url{https://github.com/gancia-kiss/dbs_projekt}
 
-Die letzte Iteration hatten wir ein paar 'Count' Attributen addiert, wir haben aber uns später entschieden, dass wir sie nicht brauchen. Diese Iteration, aber haben wir bemerkt, dass wir eigenltich diese Attribute brauchen.
 
 \section*{1.Aufgabe: Datenbankschema erstellen}
+Link zum $.sql$ Datei: \\ 
+\url{https://github.com/gancia-kiss/dbs_projekt/blob/master/DatabaseDump.sql}
+
+Die letzte Iteration hatten wir ein paar 'Count' Attributen addiert, wir haben aber uns später entschieden, dass wir sie nicht brauchen. Diese Iteration, aber wir haben bemerkt, dass wir eigenltich diese Attribute brauchen.
+
+Zusätzlich haben wir auch ein Count Attribut, damit wir aufzählen können, welche Paar von Hashtags am häufigsten vorkommt. 
+
+Wir haben uns entschieden selber IDs von Tweets zu erstellten und zwar mit Python UUID. Das Ergebnis kann größere Integer sein, deswegen haben wir als TWEET.ID 'bigint' als Datentyp benutzt.
+
+Bei uns ist der Inhalt der Hashtags die primäre Schlüssel. Wir haben auch als Erinerrung der Attribut 'textlowercase' genannt, um zu wissen, nur kleine Buchstaben zu verwenden.
+
+\begin{verbatim}
+ pg_dump election > DatabaseDump.sql     # Dump Datei erstellen
+ 
+ psql election < DatabaseDump.sql        # Datenbank vom .sql Datei importieren
+ 
+\end{verbatim}
 
 
 
-\section*{2.Aufgabe:Datenbereinigung}
+\section*{2.Aufgabe: Datenbereinigung}
+
+Link zum Datenreinigungsprogramm: \\
+\url{https://github.com/gancia-kiss/dbs_projekt/blob/master/programs/cleaner.py}
 
 Nach tiefere Datenanalyse haben wir zwei Hauptprobleme identifiziert:
 
@@ -42,6 +61,8 @@ Die Python Program war sehr einfach. Wir haben die Standartbibliothek 'csv' benu
 
 
 \section*{4.Aufgabe: Webserver}
+Link zum Webserver: \\
+\url{https://github.com/gancia-kiss/dbs_projekt/tree/master/programs/server}
 
 Wir haben uns entschieden selbe einen Webserver zu entwickeln und zwar wollten wir die 'Flask' Framework von Python zu verwenden. Die Installation war sehr einfach, und es ist sehr einfach ein kurzes Programm zu entwickeln.
 
