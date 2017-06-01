@@ -15,12 +15,12 @@ class TableParser:
 
 		return {
 
-			Contract.ADD_TO_TABLE_KEY: 'tweet',
-			'id': Utils.getRandom8ByteInt(),
-			'author': entry['handle'],
-			'text': entry['text'],
-			'time': Extractor.extractTime(entry),
-			'rating': Extractor.calculateRatingForTweet(entry)  
+			Contract.ADD_TO_TABLE_KEY: Contract.TABLE_TWEET,
+			Contract.ID_COLUMN: Utils.getRandom8ByteInt(),
+			Contract.AUTHOR_COLUMN: entry[Contract.HANDLE_ENTRY],
+			Contract.TEXT_COLUMN: entry[Contract.TEXT_ENTRY],
+			Contract.TIME_COLUMN: Extractor.extractTime(entry),
+			Contract.RATING_COLUMN: Extractor.calculateRatingForTweet(entry)  
 		}
 
 	@staticmethod	
@@ -30,8 +30,9 @@ class TableParser:
 		for ht in hashtagTexts:
 			hashtags.append(
 				{
-					Contract.ADD_TO_TABLE_KEY: 'hashtag',
-					'textlowercase': ht
+					Contract.ADD_TO_TABLE_KEY: Contract.TABLE_HASHTAG,
+					Contract.TEXT_LOWER_CASE_COLUMN: ht,
+					Contract.COUNT_COLUMN: 1
 				}
 			)
 		
@@ -40,24 +41,24 @@ class TableParser:
 	@staticmethod	
 	def getWeekFromEntry(entry):
 		return {
-			Contract.ADD_TO_TABLE_KEY: 'week',
-			'startdate': Extractor.getWeekStart(entry),
-			'enddate': Extractor.getWeekEnd(entry)
+			Contract.ADD_TO_TABLE_KEY: Contract.TABLE_WEEK,
+			Contract.START_DATE_COLUMN: Extractor.getWeekStart(entry),
+			Contract.END_DATE_COLUMN: Extractor.getWeekEnd(entry)
 		}
 
 	@staticmethod
 	def getUsedIns(week, hashtags):
 		
 		usedIns = []
-		startDate = week['startdate']
+		startDate = week[Contract.START_DATE_COLUMN]
 
 		for ht in hashtags:
 			usedIns.append(
 				{
-					Contract.ADD_TO_TABLE_KEY: 'usedin',
-					'hashtagtext': ht,
-					'weekstartdate': startDate,
-					'count': 1
+					Contract.ADD_TO_TABLE_KEY: Contract.TABLE_USED_IN,
+					Contract.HASHTAG_TEXT_COLUMN: ht,
+					Contract.WEEK_START_DATE_COLUMN: startDate,
+					Contract.COUNT_COLUMN: 1
 				}
 			)
 
@@ -67,23 +68,23 @@ class TableParser:
 	@staticmethod
 	def getPostedIn(week, tweet):
 		return {
-			Contract.ADD_TO_TABLE_KEY: 'postedin',
-			'tweetid': tweet['id'],
-			'weekstartdate': week['startdate']
+			Contract.ADD_TO_TABLE_KEY: Contract.TABLE_POSTED_IN,
+			Contract.TWEET_ID_COLUMN: tweet[Contract.ID_COLUMN],
+			Contract.WEEK_START_DATE_COLUMN: week[Contract.START_DATE_COLUMN]
 		}
 
 	@staticmethod
 	def getContains(tweet, hashtags):
 		
 		contains = []
-		tweetid = tweet['id']
+		tweetid = tweet[Contract.ID_COLUMN]
 
 		for ht in hashtags:
 			contains.append(
 				{
-					Contract.ADD_TO_TABLE_KEY: 'contains',
-					'hashtagtext': ht,
-					'tweetid': tweetid
+					Contract.ADD_TO_TABLE_KEY: Contract.TABLE_CONTAINS,
+					Contract.HASHTAG_TEXT_COLUMN: ht,
+					Contract.TWEET_ID_COLUMN: tweetid
 				}
 			)
 
@@ -98,10 +99,10 @@ class TableParser:
 		for pair in pairs:
 			usedTogetherWiths.append(
 				{
-					Contract.ADD_TO_TABLE_KEY: 'usedtogetherwith',
-					'primaryhashtag': pair[0],
-					'togetherwithhashtag': pair[1],
-					'count': 1
+					Contract.ADD_TO_TABLE_KEY: Contract.TABLE_USED_TOGETHER_WITH,
+					Contract.PRIMARY_HASHTAG_COLUMN: pair[0],
+					Contract.TOGETHER_WITH_HASHTAG_COLUMN: pair[1],
+					Contract.COUNT_COLUMN: 1
 				}
 			)
 

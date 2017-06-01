@@ -1,6 +1,7 @@
 import psycopg2
 import json
 from Contract import Contract
+from Utils import Utils
 
 
 class DBController:
@@ -20,13 +21,26 @@ class DBController:
 
 	def addToDB(self, table, entriesDict):
 		
-		sqlExpr = "INSERT INTO {0} ({1}) VALUES ({2})"
-		sqlCommand = sqlExpr.format(table, ",".join(list(entriesDict.keys())), DBController.getValuesFromDict(entriesDict))
+		sqlInsertExpr = "INSERT INTO {0} ({1}) VALUES ({2})"
+		sqlInsertCommand = sqlInsertExpr.format(table, ",".join(list(entriesDict.keys())), Utils.getValuesFromDict(entriesDict))
 
 		try:
-			self.cursor.execute(sqlCommand)
+			self.cursor.execute(sqlInsertCommand)
 		except Exception as err:
-			print("Something went wrong while adding new DB entry: " + str(err))
+			
+			if Contract.COUNT_COLUMN in entriesDict:
+				entriesDictCopy = entriesDict.copy()
+				del entriesDictCopy[Contract.COUNT_COLUMN]
+
+				sqlUpdateExpr = "UPDATE {0} SET {1}={1}+1 WHERE ({2})"
+				sqlUpdateCommand = sqlUpdateExpr.format(table, Contract.COUNT_COLUMN, DBController.getWhereConditionsForUpdate(entriesDictCopy))
+				self.connection.commit()
+				self.cursor.execute(sqlUpdateCommand)
+
+			elif table in Contract.IGNORE_DUPLICATES_IN_TABLES:
+				pass
+			else:
+				print("Something went wrong while adding new DB entry to table {0}: {1}".format(table, err))
 
 		self.connection.commit()
 
@@ -56,9 +70,12 @@ class DBController:
 				self.handleAddTable(tableList)
 
 	@staticmethod
-	def getValuesFromDict(entriesDict):
-		sqlValuesArr = []
-		for key in entriesDict:
-			escapedString = str(entriesDict[key]).replace('`', '\\`')
-			sqlValuesArr.append('\'{0}\''.format( escapedString ))
-		return ', '.join(sqlValuesArr)
+	def getWhereConditionsForUpdate(columnsDict):
+		
+		conditions = []
+
+		for key in columnsDict:
+			conditions.append(key + '=' + "'{0}'".format(columnsDict[key]))
+
+		return ' AND '.join(conditions)
+

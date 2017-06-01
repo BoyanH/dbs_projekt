@@ -23,3 +23,11 @@ class Utils:
 	@staticmethod
 	def getRandom8ByteInt():
 		return uuid.uuid4().int & (1 << (8*8 - 1))-1
+
+	@staticmethod
+	def getValuesFromDict(entriesDict):
+		sqlValuesArr = []
+		for key in entriesDict:
+			escapedString = str(entriesDict[key]).replace('`', '\\`').replace('\'', '\\`')
+			sqlValuesArr.append('\'{0}\''.format( escapedString ))
+		return ', '.join(sqlValuesArr)
