@@ -148,7 +148,7 @@ ALTER TABLE week OWNER TO postgres;
 -- Data for Name: contains; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY contains (count, tweetid, hashtagtext) FROM stdin;
+COPY contains (tweetid, hashtagtext) FROM stdin;
 \.
 
 
