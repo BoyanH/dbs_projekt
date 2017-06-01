@@ -76,6 +76,10 @@ class DBController:
 
 		return len(weeks) > 0
 
+	def getTopTweets(self):
+		self.cursor.execute("SELECT * FROM {0} ORDER BY {1} LIMIT 10".format(Contract.TABLE_TWEET, Contract.RATING_COLUMN))
+		return self.cursor.fetchall()
+
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):
 		

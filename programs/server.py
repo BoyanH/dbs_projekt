@@ -11,6 +11,11 @@ host = '127.0.0.1'
 def index():
 	return 'Hello world'
 
+@app.route('/topTweets')
+def getTopTweets():
+	topTweets = dbController.getTopTweets()
+	return 'Top tweets: <br><br>' + '<br><br>'.join(str(e) for e in topTweets)
+
 if __name__ == '__main__':
 
 	dbController = DBController()
