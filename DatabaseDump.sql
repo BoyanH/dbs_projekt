@@ -51,7 +51,7 @@ ALTER TABLE contains OWNER TO postgres;
 --
 
 CREATE TABLE hashtag (
-    totalcount integer,
+    count integer,
     textlowercase character varying(40) NOT NULL
 );
 
@@ -156,7 +156,7 @@ COPY contains (tweetid, hashtagtext) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (totalcount, textlowercase) FROM stdin;
+COPY hashtag (count, textlowercase) FROM stdin;
 \.
 
 
