@@ -6,10 +6,6 @@ from Contract import Contract
 
 class TableParser:
 
-	filepath = 'test.csv'
-	csvfile = open(filepath, 'r', encoding='cp1252')
-	csv_reader = csv.DictReader(csvfile, delimiter=';', quotechar='"')
-
 	@staticmethod
 	def getTweetFromEntry(entry):
 
@@ -128,11 +124,14 @@ class TableParser:
 	def parseTables():
 		dbController = DBController()
 
-		for row in TableParser.csv_reader:
+		filepath = Contract.CSV_CLEAN
+		csvfile = open(filepath, 'r', encoding='cp1252')
+		csv_reader = csv.DictReader(csvfile, delimiter=';', quotechar='"')
+
+		for idx, row in enumerate(csv_reader):
 		    TableParser.parseRow(row, dbController)
+		    print("Parsed {} rows...".format(idx))
 
 		dbController.close()
-
-TableParser.parseTables()
 
 

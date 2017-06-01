@@ -1,5 +1,8 @@
 class Contract:
 
+	CSV_INITIAL = 'american-election-tweets.csv'
+	CSV_CLEAN = 'data-cleaned.csv'
+
 	TABLE_WEEK = 'week'
 	TABLE_TWEET = 'tweet'
 	TABLE_HASHTAG = 'hashtag'

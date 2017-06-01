@@ -69,6 +69,13 @@ class DBController:
 			else:
 				self.handleAddTable(tableList)
 
+	def checkFilled(self):
+
+		self.cursor.execute("SELECT * FROM {0}".format(Contract.TABLE_WEEK))
+		weeks = self.cursor.fetchall()
+
+		return len(weeks) > 0
+
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):
 		
