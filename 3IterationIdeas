@@ -27,3 +27,25 @@ space into a 255 bit integer, so we can use it to create rgb colours. So
 bigger distance results in a more white-ish colour, which is harder to 
 see, 2 hashtags that are very common get a black vertex. (play with 
 colours, it's fun)
+
+
+
+
+Implementation-specific:
+
+- Use DB as buffer for calculations, otherwise programm will take loads 
+of RAM.
+- Add belongsToCluster:integer attribute to each hashtag, as well as 
+coordinatesInClusterSpace:integer[] which is calculated as described 
+above and is 
+an array of integers.
+- Add Edges table. Each entry should represent an edge between 2 
+hashtags and its width, so Edges(hta:varchar(255), htb:varchar(255), 
+width:integer). 
+- Add ClusterCenters Table ClusterCenters(id:integer, 
+coordinates:integer[])
+
+- Execute k-means while updating the DB after each step
+- Calculate edges by calculating euclidic distance between each pair of 
+hashtags within a cluster
+
