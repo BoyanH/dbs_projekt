@@ -1,0 +1,29 @@
+Hashtags are represented in 2D Space, x-axis is min-date (first 
+occurance date) and y-axis is max-date (last occurance date). 
+If there are too many collisions, consider representing all 
+hashtags in a simple grid, the previous solutions should maybe provide 
+less overlaping edges. Hashtags 
+are connected with a line as thick as 1/distanceBetweenThem in n 
+dimensional cluster's space
+
+Clusters:
+
+Each hashtag is represented with an n-dmensional vector. Each week/date 
+(will be decided later) is a dimension, each hashtag is a further 
+dimension. When a hashtag is used k times in a given date, k is added 
+to the dimension of the vector, representing the given date, same logic 
+is applied when 2 hashtags are used together k times. 
+We then apply k-means algorithm to calculate the clusters.
+
+Further representation details:
+
+After we have our clusters, for each cluster, we calculate all vertex 
+widths - the width of each vertex is 1/distanceBetweenHashtags in the 
+cluster's n dimensional space. As a connection should only exist when 
+they have been used together, we explicitly remove the vertex if the 
+given 2 hashtags have not been used together.
+Alternatively, we can map the distance in the clusters' n dimensional 
+space into a 255 bit integer, so we can use it to create rgb colours. So 
+bigger distance results in a more white-ish colour, which is harder to 
+see, 2 hashtags that are very common get a black vertex. (play with 
+colours, it's fun)
