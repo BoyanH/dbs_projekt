@@ -31,3 +31,4 @@ class Utils:
 			escapedString = str(entriesDict[key]).replace('`', '\\`').replace('\'', '\\`')
 			sqlValuesArr.append('\'{0}\''.format( escapedString ))
 		return ', '.join(sqlValuesArr)
+	

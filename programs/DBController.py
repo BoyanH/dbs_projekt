@@ -25,21 +25,28 @@ class DBController:
 		sqlInsertCommand = sqlInsertExpr.format(table, ",".join(list(entriesDict.keys())), Utils.getValuesFromDict(entriesDict))
 
 		try:
-			self.cursor.execute(sqlInsertCommand)
-		except Exception as err:
-			
 			if Contract.COUNT_COLUMN in entriesDict:
+
 				entriesDictCopy = entriesDict.copy()
 				del entriesDictCopy[Contract.COUNT_COLUMN]
 
+				sqlSelectExpr = "SELECT {1} FROM {0} WHERE {2}"
+				sqlSelectCommand = sqlSelectExpr.format(table, ",".join(list(entriesDict.keys())), DBController.getWhereConditionsForUpdate(entriesDictCopy))
+
 				sqlUpdateExpr = "UPDATE {0} SET {1}={1}+1 WHERE ({2})"
 				sqlUpdateCommand = sqlUpdateExpr.format(table, Contract.COUNT_COLUMN, DBController.getWhereConditionsForUpdate(entriesDictCopy))
-				self.connection.commit()
-				self.cursor.execute(sqlUpdateCommand)
 
-			elif table in Contract.IGNORE_DUPLICATES_IN_TABLES:
-				pass
+				self.cursor.execute(sqlSelectCommand)
+				results = self.cursor.fetchall()
+
+				if len(results) > 0:
+					self.cursor.execute(sqlUpdateCommand)
+				else:
+					self.cursor.execute(sqlInsertCommand)
 			else:
+				self.cursor.execute(sqlInsertCommand)
+		except Exception as err:
+			if table != Contract.TABLE_WEEK:
 				print("Something went wrong while adding new DB entry to table {0}: {1}".format(table, err))
 
 		self.connection.commit()
