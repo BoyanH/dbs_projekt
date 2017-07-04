@@ -26,10 +26,9 @@ if __name__ == '__main__':
 	if not filled:
 		cleanData()
 		TableParser.parseTables()
+		Cluster().calculateClusters()
 	else:
 		print('Data already imported :)')
-
-	Cluster().calculateClusters()
 
 
 
