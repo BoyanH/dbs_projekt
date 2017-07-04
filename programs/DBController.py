@@ -132,6 +132,14 @@ class DBController:
 
 		self.cursor.execute(sqlUpdateCommand)
 
+	def getCoordinatesOfHashtag(self, hashTagText):
+		self.cursor.execute("SELECT {0} FROM {1} WHERE {2} = '{3}'".format(
+			Contract.COORDINATES_COLUMN, Contract.TABLE_HASHTAG, Contract.TEXT_LOWER_CASE_COLUMN, hashTagText
+			)
+		)
+
+		return [x[0] for x in self.cursor.fetchall()]
+
 
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):
