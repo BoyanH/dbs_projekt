@@ -543,6 +543,13 @@ GRANT ALL ON TABLE cluster TO testuser;
 
 
 --
+-- Name: cluster_id_seq1; Type: ACL; Schema: public; Owner: hristov
+--
+
+GRANT ALL ON SEQUENCE cluster_id_seq1 TO testuser;
+
+
+--
 -- Name: contains; Type: ACL; Schema: public; Owner: postgres
 --
 
