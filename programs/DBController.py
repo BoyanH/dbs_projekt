@@ -91,17 +91,23 @@ class DBController:
 		self.cursor.execute("SELECT {0} FROM {1} ORDER BY {0}".format(Contract.TEXT_LOWER_CASE_COLUMN, Contract.TABLE_HASHTAG))
 		return [x[0] for x in self.cursor.fetchall()]
 
-	def getDayDates(self):
-		self.cursor.execute("SELECT {0} FROM {1} ORDER BY {0}".format(Contract.DATE_COLUMN, Contract.TABLE_DAY))
+	def getDates(self, dateTable):
+		dateColumn = Contract.START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DATE_COLUMN
+
+		self.cursor.execute("SELECT {0} FROM {1} ORDER BY {0}".format(dateColumn, dateTable))
 		return [x[0] for x in self.cursor.fetchall()]
 
-	def getDayDatesForHashtag(self, hashTagText):
+	def getDatesForHashtag(self, hashTagText, dateTable):
+		dateColumn = Contract.START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DATE_COLUMN
+		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_IN
+		joinOnDateColumn =  Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
+
 		self.cursor.execute("SELECT {0} FROM {1} WHERE {2}".format(
-			Contract.DATE_COLUMN, 
-			', '.join([Contract.TABLE_HASHTAG, Contract.TABLE_DAY, Contract.TABLE_USED_ON]),
+			dateColumn, 
+			', '.join([Contract.TABLE_HASHTAG, dateTable, middleTable]),
 			'{0} = {1} AND {2} = {3} AND {4} = {5}'.format(
 				Contract.HASHTAG_TEXT_COLUMN, Contract.TEXT_LOWER_CASE_COLUMN,
-				Contract.DAY_DATE_COLUMN, Contract.DATE_COLUMN,
+				joinOnDateColumn, dateColumn,
 				Contract.TEXT_LOWER_CASE_COLUMN, "'{0}'".format(hashTagText)
 				)
 			)

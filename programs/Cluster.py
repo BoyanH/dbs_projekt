@@ -1,18 +1,20 @@
 from DBController import DBController
+from Contract import Contract
 import numpy as np
 from random import randint
 
-CLUSTERS_COUNT = 15
+CLUSTERS_COUNT = 7
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
-USED_TOGETHER_WITH_WEIGHT = 50
+USED_TOGETHER_WITH_WEIGHT = 1
 DATE_WEIGHT = 3
+DATE_TABLE = Contract.TABLE_WEEK
 
 class Cluster:
 
 	def __init__(self):
 		self.dBController = DBController();
 		self.hashtagTexts = self.dBController.getHashtagTexts()
-		self.dayDates = self.dBController.getDayDates()
+		self.dates = self.dBController.getDates(DATE_TABLE)
 
 		hashtagDimensionMapper = {}
 		dayDimensionMapper = {}
@@ -22,7 +24,7 @@ class Cluster:
 			hashtagDimensionMapper[text] = counter
 			counter += 1
 
-		for date in self.dayDates:
+		for date in self.dates:
 			dayDimensionMapper[date] = counter
 			counter += 1 
 
@@ -64,7 +66,7 @@ class Cluster:
 
 		for ht in self.hashtagTexts:
 
-			dates = self.dBController.getDayDatesForHashtag(ht)
+			dates = self.dBController.getDatesForHashtag(ht, DATE_TABLE)
 			pairs = self.dBController.getUsedTogetherWithPairsForHashtag(ht)
 
 			for date in dates:
