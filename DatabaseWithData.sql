@@ -35,6 +35,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: cluster; Type: TABLE; Schema: public; Owner: hristov
+--
+
+CREATE TABLE cluster (
+    id integer NOT NULL,
+    centercoordinates integer[]
+);
+
+
+ALTER TABLE cluster OWNER TO hristov;
+
+--
 -- Name: contains; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -63,7 +75,8 @@ ALTER TABLE day OWNER TO postgres;
 
 CREATE TABLE hashtag (
     count integer,
-    textlowercase character varying(40) NOT NULL
+    textlowercase character varying(40) NOT NULL,
+    belongstoclusterid integer
 );
 
 
@@ -92,6 +105,20 @@ CREATE TABLE postedin (
 
 
 ALTER TABLE postedin OWNER TO postgres;
+
+--
+-- Name: representationedge; Type: TABLE; Schema: public; Owner: hristov
+--
+
+CREATE TABLE representationedge (
+    hashtag1 character varying(40),
+    hashtag2 character varying(40),
+    edgewidth real,
+    belongstoclusterid integer
+);
+
+
+ALTER TABLE representationedge OWNER TO hristov;
 
 --
 -- Name: tweet; Type: TABLE; Schema: public; Owner: postgres
@@ -179,6 +206,14 @@ CREATE TABLE week (
 
 
 ALTER TABLE week OWNER TO postgres;
+
+--
+-- Data for Name: cluster; Type: TABLE DATA; Schema: public; Owner: hristov
+--
+
+COPY cluster (id, centercoordinates) FROM stdin;
+\.
+
 
 --
 -- Data for Name: contains; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -2229,451 +2264,451 @@ COPY day (date) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (count, textlowercase) FROM stdin;
-1	lafloo
-1	lovetrumpshat
-2	nationalvoterregistrationda
-4	nationalvoterregistrationday
-2	shewo
-1	clintonkaine
-2	trumpwon
-2	shewon
-1	rio2016
-2	enough
-1	turkey
-2	virwinia
-1	commanderinchiefforum
-1	benghazi
-1	alwaystrum
-1	standwithlouisiana
-1	whereshillary
-5	icymi
-1	isis
-1	whd
-1	nabjnahj1
-5	nbcnewsforu
-1	debat
-7	nbcnewsforum
-1	rosanelleaton
-1	coastguardday
-14	imwithher
-1	media
-5	neverhillar
-2	strongertogethe
-21	demsinphilly
-1	philandocastile
-1	feelthebern
-3	trumpyourself
-2	lawandorder
-2	laborday
-58	votetrump
-1	daca
-1	extremevetting
-7	obamacare
-1	alconvention2016
-1	tpp
-1	usa
-1	frozen
-1	rncwithberni
-3	debate
-1	youthday
-3	gopconvention
-57	americafirst
-2	trumppence1
-2	demsinph
-1	dn
-1	les
-1	trumpineverett
-2	demsinphl
-1	trumpmovement
-1	slipping
-4	debates201
-1	electionday
-19	debatenigh
-30	debatenight
-9	debates2016
-1	declareyourambition
-1	opioidawarenessweek
-1	ada
-1	cripthevot
-1	terencecrutcher
-1	ung
-1	rip
-1	juangabriel
-1	divodejuarez
-4	scotus
-2	polls
-1	thedonald
-1	jimmyfallon
-1	thetonightshow
-1	myteacherisweird
-1	fallontonigh
-1	hispanicheritagemonth
-1	defendthesecond
-2	lgbt
-1	blackmenforbernie
-1	librarianofcongress
-1	hillary2016
-1	blacksfortrum
-1	wetrumphat
-2	nato
-4	2a
-1	election201
-1	stopgunviolenc
-1	neverhillary
-14	demconvention
-1	taxplan
-1	enjoy
-2	smallbiz
-1	nevertrum
-4	womensequalityday
-1	flashbackfriday
-1	standtogethe
-2	nps100
-1	buildthewall
-1	naacp107
-1	purpleheartda
-1	voterfraud
-1	diwali
-1	blackwomensequalpay
-1	imwithhernandez
-1	senddonaldtospace
-1	msm
-1	puls
-2	rollcallvote
-2	wemadehistory
-1	ugpride2016
-2	restorethevra
-1	teamusa
-1	openingceremony
-47	maga
-1	trumpyoursel
-5	imwithhe
-1	khizrkhan
-5	strongertogether
-11	tbt
-7	potus
-1	dncinphl
-1	hillarykaine2016
-1	gopconventio
-2	wemadehistor
-1	clintonkain
-6	rncincl
-54	rncincle
-1	60minutes
-2	trumppence2016
-31	demsinphill
-1	gopincle
-1	trumpiswithyou
-4	lesm
-3	makeamericasafeagain
-1	aidsfreegeneration
-2	citizensunited
-1	campaignfinance
-21	trumppence16
-1	mikepence
-1	juntossepuede
-1	irandeal
-1	fixdemocracyfirst
-1	work
-14	crookedhillary
-5	lovetrumpshate
-3	hannity
-1	orlando
-2	brexit
-1	neverforget
-1	srebrenica
-1	wimbledon
-2	stopthehate
-2	trumptrai
-1	firstinpotus
-2	nevertrump
-2	goodtrouble
-5	mag
-44	imwithyou
-5	imwithyo
-5	1
-27	trumptrain
-14	makeamericagreatagai
-4	teamtrump
-1	riggedsyste
-1	leadright2016
-1	wcs16
-1	makersandtakers
-1	secondamendment
-1	creatorsaskhrc
-1	creatorsaskhr
-1	upupup
-1	turnuptovote
-1	ohhillyes
-1	sayhername
-1	dtmag
-1	usmc201
-1	nycpride
-1	whcd
-1	fns
-4	demplatform
-1	americafirs
-1	westvirginia
-2	brexitvot
-2	brexitvote
-1	democraticsitin
-1	titleix
-1	clinto
-1	aslongasittakes
-1	mayda
-1	nomoresilence
-1	racine
-2	sitin
-1	endgunviolenc
-1	notonemore
-3	nobillnobrea
-1	megynkellypresent
-1	holdthefloor
-1	nomoresilenc
-5	nobillnobreak
-1	olmstead
-1	gibill
-1	veterans
-1	moreincommo
-2	disarmhate
-1	disarmhat
-1	worldrefugeeday
-1	wausau
-1	orprimary
-1	laudatos
-1	madeinamerica
-9	nyprimary
-1	eauclaire
-1	hillaryoncnn
-1	donaldtrump
-1	charleston9
-1	trumpdallas
-1	internationalnursesday
-1	ivoted
-1	sheswithu
-1	filibuster
-1	earthday
-2	orlandounited
-1	armybday
-1	netneutrality
-1	washingtondc
-1	stanleycup
-1	statehood
-2	actonclimate
-6	primaryday
-1	rtm2016
-1	indprimary
-2	trum
-205	makeamericagreatagain
-1	prince
-1	indiana
-1	wibackher
-1	hillaryclinton
-1	historymad
-2	stopgunviolence
-8	womancard
-1	hillaryongma
-1	fightforfamilie
-1	repmikekelly
-1	nebraskaprimary
-2	dday
-1	decision2016
-1	elkhart
-1	eastvillage
-1	trumpforpresident
-2	caprimary
-1	women4ttump
-1	mattschlapp
-1	jenniferrubin
-2	gunviolence
-1	saveelephants
-1	mothersda
-1	madeforhistory
-1	teachers4trump
-1	ca4trump
-1	neverdem
-1	kentuckyderby
-1	caribbean
-1	lssc
-1	trump360
-1	understandslaver
-1	memorialday
-1	houstonflood
-1	md
-1	cincodemayo
-1	smallbizwee
-1	thanksobam
-1	teacherappreciationday
-1	meetthetrumps
-2	fightforfamilies
-1	sallyrideday
-1	uaw
-1	johnryder
-5	newyorkvalues
-2	msnbctownhal
-1	ctprimary
-1	deprimary
-1	mdprimary
-1	inprimar
-1	armedforcesday
-2	estoyconella
-1	michaelbrown
-1	mothersofthemovement
-1	changeagent
-2	paprimary
-2	riprimary
-1	gop
-1	hrc4p
-2	votetrump2016
-2	lyingted
-13	wiprimary
-9	inprimary
-1	apahm
-1	haileypuckett
-3	votetrumpny
-2	wakeupameric
-1	newday
-1	westerntuesday
-1	women4trump
-1	presidenttrump
-1	primary
-1	nevercruz
-1	votetrumpwi
-3	wisconsin
-1	derp
-12	supertuesday
-1	wattersworld
-1	trumpcountry
-2	arizonaprimary
-2	utahcaucus
-2	utcaucus
-1	americansamoa
-1	brussels
-1	arizona
-1	aipac2016
-3	azprimary
-1	az
-1	mormon
-1	utahprimary
-1	utah4trump
-2	utah
-5	
-1	ut
-1	cnn
-3	votetrum
-8	trump
-2	go
-27	trump201
-1	endcommoncore
-286	trump2016
-1	americagreatagain
-1	excellent
-1	donald
-1	lightweightsenatormarcorubio
-1	rnc
-1	trumpwaikiki
-1	mahalo
-1	mediafraud
-1	msprimary
-1	trumpdog
-1	commoncore
-2	supersaturda
-1	littlemarco
-1	kansascaucus
-1	morningjoe
-1	superbowlsunday
-1	sb5
-1	commonlaw
-1	naturalborn
-2	marybrigidmcmanamon
-1	kenlangone
-1	neilcavuto
-1	fox
-1	ontherecord
-1	cruz
-2	tedcruz
-1	gplfers
-2	laurencetribe
-6	nhprimary
-1	trumpsupporters
-1	newhampshire
-7	votetrumpnh
-1	fail
-1	politician
-7	supertuesda
-1	nascar
-1	votersspeak
-1	robotrubio
-1	alwaystrump
-1	stopcommoncore
-1	rogerstone
-1	cruzfraud
-1	greta
-1	lonestarstate
-2	caucusfortrum
-1	makeyoutubegreatagain
-2	nhpolitics
-1	noloyalty
-6	caucusfortrump
-1	nvcaucus
-1	trumplv
-1	economy
-4	nevadacaucus
-1	trumpn
-1	votetrumpvt
-2	votetrumpmi
-1	votetrumpnc
-1	votetrumpma
-1	votetrumpil
-1	harveypitt
-1	bikersfortrump
-1	thankavet
-4	gopdebat
-1	trump4vets
-17	gopdebate
-7	votetrumpnv
-1	michaelmoore
-1	watch
-1	fairandbalancedmyass
-1	ted
-1	southcarolina
-1	rogerailes
-1	iowa
-1	yuge
-1	vaticanwalls
-2	iowacaucus
-1	iapolitics
-1	sotu
-1	sot
-1	colbert
-1	lss
-1	maitnerstrong
-2	fit
-7	votetrumpsc
-15	iacaucus
-2	votetrumps
-22	fitn
-1	ford
-1	carrier
-1	jobs
-1	mexico
-1	southcarolinaprimary
-1	newyork
-1	jonas
-1	newyorkvalue
-7	scprimary
-1	goldenglobe
-1	laurence
-3	foxnews
-1	wearebernie
-1	wewanttrump
-1	with
-1	rubio
-1	bush
-1	davidcameron
-1	wh
-1	trump4president
+COPY hashtag (count, textlowercase, belongstoclusterid) FROM stdin;
+1	lafloo	\N
+1	lovetrumpshat	\N
+2	nationalvoterregistrationda	\N
+4	nationalvoterregistrationday	\N
+2	shewo	\N
+1	clintonkaine	\N
+2	trumpwon	\N
+2	shewon	\N
+1	rio2016	\N
+2	enough	\N
+1	turkey	\N
+2	virwinia	\N
+1	commanderinchiefforum	\N
+1	benghazi	\N
+1	alwaystrum	\N
+1	standwithlouisiana	\N
+1	whereshillary	\N
+5	icymi	\N
+1	isis	\N
+1	whd	\N
+1	nabjnahj1	\N
+5	nbcnewsforu	\N
+1	debat	\N
+7	nbcnewsforum	\N
+1	rosanelleaton	\N
+1	coastguardday	\N
+14	imwithher	\N
+1	media	\N
+5	neverhillar	\N
+2	strongertogethe	\N
+21	demsinphilly	\N
+1	philandocastile	\N
+1	feelthebern	\N
+3	trumpyourself	\N
+2	lawandorder	\N
+2	laborday	\N
+58	votetrump	\N
+1	daca	\N
+1	extremevetting	\N
+7	obamacare	\N
+1	alconvention2016	\N
+1	tpp	\N
+1	usa	\N
+1	frozen	\N
+1	rncwithberni	\N
+3	debate	\N
+1	youthday	\N
+3	gopconvention	\N
+57	americafirst	\N
+2	trumppence1	\N
+2	demsinph	\N
+1	dn	\N
+1	les	\N
+1	trumpineverett	\N
+2	demsinphl	\N
+1	trumpmovement	\N
+1	slipping	\N
+4	debates201	\N
+1	electionday	\N
+19	debatenigh	\N
+30	debatenight	\N
+9	debates2016	\N
+1	declareyourambition	\N
+1	opioidawarenessweek	\N
+1	ada	\N
+1	cripthevot	\N
+1	terencecrutcher	\N
+1	ung	\N
+1	rip	\N
+1	juangabriel	\N
+1	divodejuarez	\N
+4	scotus	\N
+2	polls	\N
+1	thedonald	\N
+1	jimmyfallon	\N
+1	thetonightshow	\N
+1	myteacherisweird	\N
+1	fallontonigh	\N
+1	hispanicheritagemonth	\N
+1	defendthesecond	\N
+2	lgbt	\N
+1	blackmenforbernie	\N
+1	librarianofcongress	\N
+1	hillary2016	\N
+1	blacksfortrum	\N
+1	wetrumphat	\N
+2	nato	\N
+4	2a	\N
+1	election201	\N
+1	stopgunviolenc	\N
+1	neverhillary	\N
+14	demconvention	\N
+1	taxplan	\N
+1	enjoy	\N
+2	smallbiz	\N
+1	nevertrum	\N
+4	womensequalityday	\N
+1	flashbackfriday	\N
+1	standtogethe	\N
+2	nps100	\N
+1	buildthewall	\N
+1	naacp107	\N
+1	purpleheartda	\N
+1	voterfraud	\N
+1	diwali	\N
+1	blackwomensequalpay	\N
+1	imwithhernandez	\N
+1	senddonaldtospace	\N
+1	msm	\N
+1	puls	\N
+2	rollcallvote	\N
+2	wemadehistory	\N
+1	ugpride2016	\N
+2	restorethevra	\N
+1	teamusa	\N
+1	openingceremony	\N
+47	maga	\N
+1	trumpyoursel	\N
+5	imwithhe	\N
+1	khizrkhan	\N
+5	strongertogether	\N
+11	tbt	\N
+7	potus	\N
+1	dncinphl	\N
+1	hillarykaine2016	\N
+1	gopconventio	\N
+2	wemadehistor	\N
+1	clintonkain	\N
+6	rncincl	\N
+54	rncincle	\N
+1	60minutes	\N
+2	trumppence2016	\N
+31	demsinphill	\N
+1	gopincle	\N
+1	trumpiswithyou	\N
+4	lesm	\N
+3	makeamericasafeagain	\N
+1	aidsfreegeneration	\N
+2	citizensunited	\N
+1	campaignfinance	\N
+21	trumppence16	\N
+1	mikepence	\N
+1	juntossepuede	\N
+1	irandeal	\N
+1	fixdemocracyfirst	\N
+1	work	\N
+14	crookedhillary	\N
+5	lovetrumpshate	\N
+3	hannity	\N
+1	orlando	\N
+2	brexit	\N
+1	neverforget	\N
+1	srebrenica	\N
+1	wimbledon	\N
+2	stopthehate	\N
+2	trumptrai	\N
+1	firstinpotus	\N
+2	nevertrump	\N
+2	goodtrouble	\N
+5	mag	\N
+44	imwithyou	\N
+5	imwithyo	\N
+5	1	\N
+27	trumptrain	\N
+14	makeamericagreatagai	\N
+4	teamtrump	\N
+1	riggedsyste	\N
+1	leadright2016	\N
+1	wcs16	\N
+1	makersandtakers	\N
+1	secondamendment	\N
+1	creatorsaskhrc	\N
+1	creatorsaskhr	\N
+1	upupup	\N
+1	turnuptovote	\N
+1	ohhillyes	\N
+1	sayhername	\N
+1	dtmag	\N
+1	usmc201	\N
+1	nycpride	\N
+1	whcd	\N
+1	fns	\N
+4	demplatform	\N
+1	americafirs	\N
+1	westvirginia	\N
+2	brexitvot	\N
+2	brexitvote	\N
+1	democraticsitin	\N
+1	titleix	\N
+1	clinto	\N
+1	aslongasittakes	\N
+1	mayda	\N
+1	nomoresilence	\N
+1	racine	\N
+2	sitin	\N
+1	endgunviolenc	\N
+1	notonemore	\N
+3	nobillnobrea	\N
+1	megynkellypresent	\N
+1	holdthefloor	\N
+1	nomoresilenc	\N
+5	nobillnobreak	\N
+1	olmstead	\N
+1	gibill	\N
+1	veterans	\N
+1	moreincommo	\N
+2	disarmhate	\N
+1	disarmhat	\N
+1	worldrefugeeday	\N
+1	wausau	\N
+1	orprimary	\N
+1	laudatos	\N
+1	madeinamerica	\N
+9	nyprimary	\N
+1	eauclaire	\N
+1	hillaryoncnn	\N
+1	donaldtrump	\N
+1	charleston9	\N
+1	trumpdallas	\N
+1	internationalnursesday	\N
+1	ivoted	\N
+1	sheswithu	\N
+1	filibuster	\N
+1	earthday	\N
+2	orlandounited	\N
+1	armybday	\N
+1	netneutrality	\N
+1	washingtondc	\N
+1	stanleycup	\N
+1	statehood	\N
+2	actonclimate	\N
+6	primaryday	\N
+1	rtm2016	\N
+1	indprimary	\N
+2	trum	\N
+205	makeamericagreatagain	\N
+1	prince	\N
+1	indiana	\N
+1	wibackher	\N
+1	hillaryclinton	\N
+1	historymad	\N
+2	stopgunviolence	\N
+8	womancard	\N
+1	hillaryongma	\N
+1	fightforfamilie	\N
+1	repmikekelly	\N
+1	nebraskaprimary	\N
+2	dday	\N
+1	decision2016	\N
+1	elkhart	\N
+1	eastvillage	\N
+1	trumpforpresident	\N
+2	caprimary	\N
+1	women4ttump	\N
+1	mattschlapp	\N
+1	jenniferrubin	\N
+2	gunviolence	\N
+1	saveelephants	\N
+1	mothersda	\N
+1	madeforhistory	\N
+1	teachers4trump	\N
+1	ca4trump	\N
+1	neverdem	\N
+1	kentuckyderby	\N
+1	caribbean	\N
+1	lssc	\N
+1	trump360	\N
+1	understandslaver	\N
+1	memorialday	\N
+1	houstonflood	\N
+1	md	\N
+1	cincodemayo	\N
+1	smallbizwee	\N
+1	thanksobam	\N
+1	teacherappreciationday	\N
+1	meetthetrumps	\N
+2	fightforfamilies	\N
+1	sallyrideday	\N
+1	uaw	\N
+1	johnryder	\N
+5	newyorkvalues	\N
+2	msnbctownhal	\N
+1	ctprimary	\N
+1	deprimary	\N
+1	mdprimary	\N
+1	inprimar	\N
+1	armedforcesday	\N
+2	estoyconella	\N
+1	michaelbrown	\N
+1	mothersofthemovement	\N
+1	changeagent	\N
+2	paprimary	\N
+2	riprimary	\N
+1	gop	\N
+1	hrc4p	\N
+2	votetrump2016	\N
+2	lyingted	\N
+13	wiprimary	\N
+9	inprimary	\N
+1	apahm	\N
+1	haileypuckett	\N
+3	votetrumpny	\N
+2	wakeupameric	\N
+1	newday	\N
+1	westerntuesday	\N
+1	women4trump	\N
+1	presidenttrump	\N
+1	primary	\N
+1	nevercruz	\N
+1	votetrumpwi	\N
+3	wisconsin	\N
+1	derp	\N
+12	supertuesday	\N
+1	wattersworld	\N
+1	trumpcountry	\N
+2	arizonaprimary	\N
+2	utahcaucus	\N
+2	utcaucus	\N
+1	americansamoa	\N
+1	brussels	\N
+1	arizona	\N
+1	aipac2016	\N
+3	azprimary	\N
+1	az	\N
+1	mormon	\N
+1	utahprimary	\N
+1	utah4trump	\N
+2	utah	\N
+5		\N
+1	ut	\N
+1	cnn	\N
+3	votetrum	\N
+8	trump	\N
+2	go	\N
+27	trump201	\N
+1	endcommoncore	\N
+286	trump2016	\N
+1	americagreatagain	\N
+1	excellent	\N
+1	donald	\N
+1	lightweightsenatormarcorubio	\N
+1	rnc	\N
+1	trumpwaikiki	\N
+1	mahalo	\N
+1	mediafraud	\N
+1	msprimary	\N
+1	trumpdog	\N
+1	commoncore	\N
+2	supersaturda	\N
+1	littlemarco	\N
+1	kansascaucus	\N
+1	morningjoe	\N
+1	superbowlsunday	\N
+1	sb5	\N
+1	commonlaw	\N
+1	naturalborn	\N
+2	marybrigidmcmanamon	\N
+1	kenlangone	\N
+1	neilcavuto	\N
+1	fox	\N
+1	ontherecord	\N
+1	cruz	\N
+2	tedcruz	\N
+1	gplfers	\N
+2	laurencetribe	\N
+6	nhprimary	\N
+1	trumpsupporters	\N
+1	newhampshire	\N
+7	votetrumpnh	\N
+1	fail	\N
+1	politician	\N
+7	supertuesda	\N
+1	nascar	\N
+1	votersspeak	\N
+1	robotrubio	\N
+1	alwaystrump	\N
+1	stopcommoncore	\N
+1	rogerstone	\N
+1	cruzfraud	\N
+1	greta	\N
+1	lonestarstate	\N
+2	caucusfortrum	\N
+1	makeyoutubegreatagain	\N
+2	nhpolitics	\N
+1	noloyalty	\N
+6	caucusfortrump	\N
+1	nvcaucus	\N
+1	trumplv	\N
+1	economy	\N
+4	nevadacaucus	\N
+1	trumpn	\N
+1	votetrumpvt	\N
+2	votetrumpmi	\N
+1	votetrumpnc	\N
+1	votetrumpma	\N
+1	votetrumpil	\N
+1	harveypitt	\N
+1	bikersfortrump	\N
+1	thankavet	\N
+4	gopdebat	\N
+1	trump4vets	\N
+17	gopdebate	\N
+7	votetrumpnv	\N
+1	michaelmoore	\N
+1	watch	\N
+1	fairandbalancedmyass	\N
+1	ted	\N
+1	southcarolina	\N
+1	rogerailes	\N
+1	iowa	\N
+1	yuge	\N
+1	vaticanwalls	\N
+2	iowacaucus	\N
+1	iapolitics	\N
+1	sotu	\N
+1	sot	\N
+1	colbert	\N
+1	lss	\N
+1	maitnerstrong	\N
+2	fit	\N
+7	votetrumpsc	\N
+15	iacaucus	\N
+2	votetrumps	\N
+22	fitn	\N
+1	ford	\N
+1	carrier	\N
+1	jobs	\N
+1	mexico	\N
+1	southcarolinaprimary	\N
+1	newyork	\N
+1	jonas	\N
+1	newyorkvalue	\N
+7	scprimary	\N
+1	goldenglobe	\N
+1	laurence	\N
+3	foxnews	\N
+1	wearebernie	\N
+1	wewanttrump	\N
+1	with	\N
+1	rubio	\N
+1	bush	\N
+1	davidcameron	\N
+1	wh	\N
+1	trump4president	\N
 \.
 
 
@@ -14744,6 +14779,14 @@ COPY postedin (tweetid, weekstartdate) FROM stdin;
 
 
 --
+-- Data for Name: representationedge; Type: TABLE DATA; Schema: public; Owner: hristov
+--
+
+COPY representationedge (hashtag1, hashtag2, edgewidth, belongstoclusterid) FROM stdin;
+\.
+
+
+--
 -- Data for Name: tweet; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -23063,6 +23106,14 @@ COPY week (enddate, startdate) FROM stdin;
 
 
 --
+-- Name: cluster cluster_pkey; Type: CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY cluster
+    ADD CONSTRAINT cluster_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: day day_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -23111,6 +23162,14 @@ ALTER TABLE ONLY contains
 
 
 --
+-- Name: hashtag hashtag_belongstoclusterid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY hashtag
+    ADD CONSTRAINT hashtag_belongstoclusterid_fkey FOREIGN KEY (belongstoclusterid) REFERENCES cluster(id);
+
+
+--
 -- Name: isin isin_daydate_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -23140,6 +23199,30 @@ ALTER TABLE ONLY postedin
 
 ALTER TABLE ONLY postedin
     ADD CONSTRAINT postedin_weekstartdate_fkey FOREIGN KEY (weekstartdate) REFERENCES week(startdate);
+
+
+--
+-- Name: representationedge representationedge_belongstoclusterid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_belongstoclusterid_fkey FOREIGN KEY (belongstoclusterid) REFERENCES cluster(id);
+
+
+--
+-- Name: representationedge representationedge_hashtag1_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_hashtag1_fkey FOREIGN KEY (hashtag1) REFERENCES hashtag(textlowercase);
+
+
+--
+-- Name: representationedge representationedge_hashtag2_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_hashtag2_fkey FOREIGN KEY (hashtag2) REFERENCES hashtag(textlowercase);
 
 
 --

@@ -35,6 +35,18 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: cluster; Type: TABLE; Schema: public; Owner: hristov
+--
+
+CREATE TABLE cluster (
+    id integer NOT NULL,
+    centercoordinates integer[]
+);
+
+
+ALTER TABLE cluster OWNER TO hristov;
+
+--
 -- Name: contains; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -63,7 +75,8 @@ ALTER TABLE day OWNER TO postgres;
 
 CREATE TABLE hashtag (
     count integer,
-    textlowercase character varying(40) NOT NULL
+    textlowercase character varying(40) NOT NULL,
+    belongstoclusterid integer
 );
 
 
@@ -92,6 +105,20 @@ CREATE TABLE postedin (
 
 
 ALTER TABLE postedin OWNER TO postgres;
+
+--
+-- Name: representationedge; Type: TABLE; Schema: public; Owner: hristov
+--
+
+CREATE TABLE representationedge (
+    hashtag1 character varying(40),
+    hashtag2 character varying(40),
+    edgewidth real,
+    belongstoclusterid integer
+);
+
+
+ALTER TABLE representationedge OWNER TO hristov;
 
 --
 -- Name: tweet; Type: TABLE; Schema: public; Owner: postgres
@@ -181,6 +208,14 @@ CREATE TABLE week (
 ALTER TABLE week OWNER TO postgres;
 
 --
+-- Data for Name: cluster; Type: TABLE DATA; Schema: public; Owner: hristov
+--
+
+COPY cluster (id, centercoordinates) FROM stdin;
+\.
+
+
+--
 -- Data for Name: contains; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -200,7 +235,7 @@ COPY day (date) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (count, textlowercase) FROM stdin;
+COPY hashtag (count, textlowercase, belongstoclusterid) FROM stdin;
 \.
 
 
@@ -217,6 +252,14 @@ COPY isin (daydate, weekstartdate) FROM stdin;
 --
 
 COPY postedin (tweetid, weekstartdate) FROM stdin;
+\.
+
+
+--
+-- Data for Name: representationedge; Type: TABLE DATA; Schema: public; Owner: hristov
+--
+
+COPY representationedge (hashtag1, hashtag2, edgewidth, belongstoclusterid) FROM stdin;
 \.
 
 
@@ -268,6 +311,14 @@ COPY week (enddate, startdate) FROM stdin;
 
 
 --
+-- Name: cluster cluster_pkey; Type: CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY cluster
+    ADD CONSTRAINT cluster_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: day day_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -316,6 +367,14 @@ ALTER TABLE ONLY contains
 
 
 --
+-- Name: hashtag hashtag_belongstoclusterid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY hashtag
+    ADD CONSTRAINT hashtag_belongstoclusterid_fkey FOREIGN KEY (belongstoclusterid) REFERENCES cluster(id);
+
+
+--
 -- Name: isin isin_daydate_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -345,6 +404,30 @@ ALTER TABLE ONLY postedin
 
 ALTER TABLE ONLY postedin
     ADD CONSTRAINT postedin_weekstartdate_fkey FOREIGN KEY (weekstartdate) REFERENCES week(startdate);
+
+
+--
+-- Name: representationedge representationedge_belongstoclusterid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_belongstoclusterid_fkey FOREIGN KEY (belongstoclusterid) REFERENCES cluster(id);
+
+
+--
+-- Name: representationedge representationedge_hashtag1_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_hashtag1_fkey FOREIGN KEY (hashtag1) REFERENCES hashtag(textlowercase);
+
+
+--
+-- Name: representationedge representationedge_hashtag2_fkey; Type: FK CONSTRAINT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY representationedge
+    ADD CONSTRAINT representationedge_hashtag2_fkey FOREIGN KEY (hashtag2) REFERENCES hashtag(textlowercase);
 
 
 --
