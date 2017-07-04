@@ -30,17 +30,22 @@ class Cluster:
 
 	def calculateClusters(self):
 		self.htVectors = self.updateHashtagVectors()
-		self.clusterCenters = self.getClusterCenters()
-		self.clustersForHt = self.executeKMeans()
 
 		for ht in self.htVectors:
 			self.dBController.updateHashtagVector(ht, self.htVectors[ht]);
 
+		self.dBController.connection.commit();
+
+		self.clusterCenters = self.getClusterCenters()
+		self.clustersForHt = self.executeKMeans()
+
 		for center in self.clusterCenters:
 			self.dBController.addClusterCenter(center)
 
+		self.dBController.connection.commit();
+
 		for ht in self.clustersForHt:
-			centerId = self.clusterCenters.index(self.clustersForHt[ht]) + 1
+			centerId = self.dBController.getClusterCenterId(self.clustersForHt[ht]);
 			self.dBController.addHashtagToCluster(ht, centerId)
 
 
@@ -141,7 +146,7 @@ class Cluster:
 		for clusterCoord in clusterCoordinates:
 			distanceToCluster = np.linalg.norm(np.array(coordinates) - np.array(clusterCoord))
 			
-			if minDistance == None or minDistance > distanceToCluster:
+			if minDistance is None or minDistance > distanceToCluster:
 				minDistance = distanceToCluster
 				nearestClusterCoords = clusterCoord
 

@@ -151,7 +151,13 @@ class DBController:
 		sqlUpdateCommand = sqlUpdateExpr.format(Contract.TABLE_HASHTAG, Contract.BELONGS_TO_CLUSTER_ID, "'{0}'".format(clusterId),
 			Contract.TEXT_LOWER_CASE_COLUMN, "'{0}'".format(hashtag))
 
-		self.cursor.execute(sqlUpdateExpr)
+		self.cursor.execute(sqlUpdateCommand)
+
+	def getClusterCenterId(self, coords):
+		self.cursor.execute("SELECT {0} FROM {1} WHERE {2} = {3}".format(Contract.ID_COLUMN, Contract.TABLE_CLUSTER,
+			Contract.CENTER_COORDINATES, '\'{' + ', '.join([str(x) for x in coords]) + '}\''))
+
+		return [x[0] for x in self.cursor.fetchall()][0]
 
 
 	@staticmethod
