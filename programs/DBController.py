@@ -46,7 +46,7 @@ class DBController:
 			else:
 				self.cursor.execute(sqlInsertCommand)
 		except Exception as err:
-			if table != Contract.TABLE_WEEK:
+			if table != Contract.TABLE_WEEK and table != Contract.TABLE_DAY:
 				print("Something went wrong while adding new DB entry to table {0}: {1}".format(table, err))
 
 		self.connection.commit()

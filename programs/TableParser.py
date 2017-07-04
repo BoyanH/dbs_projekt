@@ -43,6 +43,13 @@ class TableParser:
 		}
 
 	@staticmethod
+	def getDayFromEntry(entry):
+		return {
+			Contract.ADD_TO_TABLE_KEY: Contract.TABLE_DAY,
+			Contract.DATE_COLUMN: Extractor.extractTime(entry)
+		}
+
+	@staticmethod
 	def getUsedIns(week, hashtags):
 		
 		usedIns = []
@@ -59,6 +66,33 @@ class TableParser:
 			)
 
 		return usedIns
+
+	@staticmethod
+	def getUsedOns(day, hashtags):
+		
+		usedOns = []
+		date = day[Contract.DATE_COLUMN]
+
+		for ht in hashtags:
+			usedOns.append(
+				{
+					Contract.ADD_TO_TABLE_KEY: Contract.TABLE_USED_ON,
+					Contract.HASHTAG_TEXT_COLUMN: ht,
+					Contract.DAY_DATE_COLUMN: date,
+					Contract.COUNT_COLUMN: 1
+				}
+			)
+
+		return usedOns
+
+	@staticmethod
+	def getIsIn(day, week):
+		
+		return {
+			Contract.ADD_TO_TABLE_KEY: Contract.TABLE_IS_IN,
+			Contract.DAY_DATE_COLUMN: day[Contract.DATE_COLUMN],
+			Contract.WEEK_START_DATE_COLUMN: week[Contract.START_DATE_COLUMN]
+		}
 
 
 	@staticmethod
@@ -118,7 +152,11 @@ class TableParser:
 		contains = TableParser.getContains(tweet, hashtagTexts)
 		usedTogetherWiths = TableParser.getUsedTogetherWithFromHTTexts(hashtagTexts)
 
-		dbController.addMultiple(tweet, week, hashtags, usedIns, postedIn, contains, usedTogetherWiths)
+		day = TableParser.getDayFromEntry(row)
+		usedOns = TableParser.getUsedOns(day, hashtagTexts)
+		isIn = TableParser.getIsIn(day, week)
+
+		dbController.addMultiple(tweet, week, hashtags, usedIns, postedIn, contains, usedTogetherWiths, day, usedOns, isIn)
 
 	@staticmethod
 	def parseTables():
