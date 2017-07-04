@@ -2,8 +2,10 @@ from DBController import DBController
 import numpy as np
 from random import randint
 
-CLUSTERS_COUNT = 5
+CLUSTERS_COUNT = 15
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
+USED_TOGETHER_WITH_WEIGHT = 50
+DATE_WEIGHT = 3
 
 class Cluster:
 
@@ -67,14 +69,14 @@ class Cluster:
 
 			for date in dates:
 				dimensionForDate = self.dayDimensionMapper[date]
-				htVectors[ht][dimensionForDate] += 1
+				htVectors[ht][dimensionForDate] += DATE_WEIGHT
 
 			# add count of usedTogetherWith to the 2 dimensions of a vector corresponding to the 2 hashtag texts
 			for pair in pairs:
 
 				for i in range(2):
 					dimensionForHt = self.hashtagDimensionMapper[pair[i]]
-					htVectors[ht][dimensionForHt] += pair[2] #pair[2] = count
+					htVectors[ht][dimensionForHt] += pair[2]*USED_TOGETHER_WITH_WEIGHT #pair[2] = count
 
 		return htVectors;
 
