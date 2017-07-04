@@ -36,9 +36,16 @@ class Cluster:
 		for ht in self.htVectors:
 			self.dBController.updateHashtagVector(ht, self.htVectors[ht]);
 
-		self.dBController.connection.commit();
+		for center in self.clusterCenters:
+			self.dBController.addClusterCenter(center)
 
-		# TODO: push to database
+		for ht in self.clustersForHt:
+			centerId = self.clusterCenters.index(self.clustersForHt[ht]) + 1
+			self.dBController.addHashtagToCluster(ht, centerId)
+
+
+
+		self.dBController.connection.commit();
 
 
 	def updateHashtagVectors(self):

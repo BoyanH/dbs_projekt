@@ -35,17 +35,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: asl; Type: TABLE; Schema: public; Owner: hristov
---
-
-CREATE TABLE asl (
-    smh integer[]
-);
-
-
-ALTER TABLE asl OWNER TO hristov;
-
---
 -- Name: cluster; Type: TABLE; Schema: public; Owner: hristov
 --
 
@@ -262,17 +251,6 @@ ALTER TABLE ONLY cluster ALTER COLUMN id SET DEFAULT nextval('cluster_id_seq1'::
 
 
 --
--- Data for Name: asl; Type: TABLE DATA; Schema: public; Owner: hristov
---
-
-COPY asl (smh) FROM stdin;
-{7,8,9}
-{7,8,9}
-{7,8,9}
-\.
-
-
---
 -- Data for Name: cluster; Type: TABLE DATA; Schema: public; Owner: hristov
 --
 
@@ -291,7 +269,7 @@ SELECT pg_catalog.setval('cluster_id_seq', 1, false);
 -- Name: cluster_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: hristov
 --
 
-SELECT pg_catalog.setval('cluster_id_seq1', 1, false);
+SELECT pg_catalog.setval('cluster_id_seq1', 1, true);
 
 
 --
@@ -558,6 +536,13 @@ ALTER TABLE ONLY usedtogetherwith
 
 
 --
+-- Name: cluster; Type: ACL; Schema: public; Owner: hristov
+--
+
+GRANT ALL ON TABLE cluster TO testuser;
+
+
+--
 -- Name: contains; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -590,6 +575,13 @@ GRANT ALL ON TABLE isin TO testuser;
 --
 
 GRANT ALL ON TABLE postedin TO testuser;
+
+
+--
+-- Name: representationedge; Type: ACL; Schema: public; Owner: hristov
+--
+
+GRANT ALL ON TABLE representationedge TO testuser;
 
 
 --

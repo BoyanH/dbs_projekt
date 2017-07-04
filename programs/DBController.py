@@ -140,6 +140,19 @@ class DBController:
 
 		return [x[0] for x in self.cursor.fetchall()]
 
+	def addClusterCenter(self, center):
+		sqlInsertExpr = "INSERT INTO {0} ({1}) VALUES ({2})"
+		sqlInsertCommand = sqlInsertExpr.format(Contract.TABLE_CLUSTER, Contract.CENTER_COORDINATES, '\'{' + ', '.join([str(x) for x in center]) + '}\'')
+
+		self.cursor.execute(sqlInsertCommand)
+
+	def addHashtagToCluster(self, hashtag, clusterId):
+		sqlUpdateExpr = "UPDATE {0} SET {1}={2} WHERE {3} = {4}"
+		sqlUpdateCommand = sqlUpdateExpr.format(Contract.TABLE_HASHTAG, Contract.BELONGS_TO_CLUSTER_ID, "'{0}'".format(clusterId),
+			Contract.TEXT_LOWER_CASE_COLUMN, "'{0}'".format(hashtag))
+
+		self.cursor.execute(sqlUpdateExpr)
+
 
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):
