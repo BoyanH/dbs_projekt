@@ -35,16 +35,62 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: asl; Type: TABLE; Schema: public; Owner: hristov
+--
+
+CREATE TABLE asl (
+    smh integer[]
+);
+
+
+ALTER TABLE asl OWNER TO hristov;
+
+--
 -- Name: cluster; Type: TABLE; Schema: public; Owner: hristov
 --
 
 CREATE TABLE cluster (
-    id integer NOT NULL,
-    centercoordinates integer[]
+    centercoordinates integer[],
+    id integer NOT NULL
 );
 
 
 ALTER TABLE cluster OWNER TO hristov;
+
+--
+-- Name: cluster_id_seq; Type: SEQUENCE; Schema: public; Owner: hristov
+--
+
+CREATE SEQUENCE cluster_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cluster_id_seq OWNER TO hristov;
+
+--
+-- Name: cluster_id_seq1; Type: SEQUENCE; Schema: public; Owner: hristov
+--
+
+CREATE SEQUENCE cluster_id_seq1
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cluster_id_seq1 OWNER TO hristov;
+
+--
+-- Name: cluster_id_seq1; Type: SEQUENCE OWNED BY; Schema: public; Owner: hristov
+--
+
+ALTER SEQUENCE cluster_id_seq1 OWNED BY cluster.id;
+
 
 --
 -- Name: contains; Type: TABLE; Schema: public; Owner: postgres
@@ -76,8 +122,8 @@ ALTER TABLE day OWNER TO postgres;
 CREATE TABLE hashtag (
     count integer,
     textlowercase character varying(40) NOT NULL,
-    belongstoclusterid integer,
-    coordinates integer[]
+    coordinates integer[],
+    belongstoclusterid integer
 );
 
 
@@ -209,11 +255,43 @@ CREATE TABLE week (
 ALTER TABLE week OWNER TO postgres;
 
 --
+-- Name: cluster id; Type: DEFAULT; Schema: public; Owner: hristov
+--
+
+ALTER TABLE ONLY cluster ALTER COLUMN id SET DEFAULT nextval('cluster_id_seq1'::regclass);
+
+
+--
+-- Data for Name: asl; Type: TABLE DATA; Schema: public; Owner: hristov
+--
+
+COPY asl (smh) FROM stdin;
+{7,8,9}
+{7,8,9}
+{7,8,9}
+\.
+
+
+--
 -- Data for Name: cluster; Type: TABLE DATA; Schema: public; Owner: hristov
 --
 
-COPY cluster (id, centercoordinates) FROM stdin;
+COPY cluster (centercoordinates, id) FROM stdin;
 \.
+
+
+--
+-- Name: cluster_id_seq; Type: SEQUENCE SET; Schema: public; Owner: hristov
+--
+
+SELECT pg_catalog.setval('cluster_id_seq', 1, false);
+
+
+--
+-- Name: cluster_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: hristov
+--
+
+SELECT pg_catalog.setval('cluster_id_seq1', 1, false);
 
 
 --
@@ -236,7 +314,7 @@ COPY day (date) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (count, textlowercase, belongstoclusterid, coordinates) FROM stdin;
+COPY hashtag (count, textlowercase, coordinates, belongstoclusterid) FROM stdin;
 \.
 
 
