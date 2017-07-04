@@ -2,6 +2,7 @@ from flask import Flask
 from cleaner import cleanData
 from DBController import DBController
 from TableParser import TableParser
+from Cluster import Cluster
 
 app = Flask(__name__)
 port = 5234
@@ -20,6 +21,7 @@ if __name__ == '__main__':
 
 	dbController = DBController()
 	filled = dbController.checkFilled()
+	dbController.close();
 
 	if not filled:
 		cleanData()
@@ -27,4 +29,8 @@ if __name__ == '__main__':
 	else:
 		print('Data already imported :)')
 
-	app.run(debug=True, host=host, port=port)
+	Cluster().calculateClusters()
+
+
+
+	app.run(host=host, port=port)

@@ -13,6 +13,8 @@ class Contract:
 	TABLE_POSTED_IN = 'postedin'
 	TABLE_USED_TOGETHER_WITH = 'usedtogetherwith'
 	TABLE_CONTAINS = 'contains'
+	TABLE_REPRESENTATION_EDGE = 'representationedge'
+	TABLE_CLUSTER = 'cluster'
 
 	ADD_TO_TABLE_KEY = 'addToTable'
 
@@ -32,8 +34,16 @@ class Contract:
 	TOGETHER_WITH_HASHTAG_COLUMN = 'togetherwithhashtag'
 	TEXT_LOWER_CASE_COLUMN = 'textlowercase'
 	HASHTAG_TEXT_COLUMN = 'hashtagtext'
+	HASHTAG1_COLUMN = 'hashtag1'
+	HASHTAG2_COLUMN = 'hashtag2'
+	EDGE_WIDTH_COLUMN = 'edgewidth'
+	BELONGS_TO_CLUSTER_ID = 'belongstoclusterid'
+	CENTER_COORDINATES = 'centercoordinates'
+	COORDINATES_COLUMN = 'coordinates'
 
 	TEXT_ENTRY = TEXT_COLUMN
 	HANDLE_ENTRY = 'handle'
 	
-	IGNORE_DUPLICATES_IN_TABLES = [TABLE_WEEK]
+	IGNORE_DUPLICATES_IN_TABLES = [TABLE_WEEK],
+
+	USED_TOGHETHER_WITHS = 'usedTogetherWiths'

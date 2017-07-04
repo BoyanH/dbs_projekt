@@ -76,7 +76,8 @@ ALTER TABLE day OWNER TO postgres;
 CREATE TABLE hashtag (
     count integer,
     textlowercase character varying(40) NOT NULL,
-    belongstoclusterid integer
+    belongstoclusterid integer,
+    coordinates integer[]
 );
 
 
@@ -235,7 +236,7 @@ COPY day (date) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (count, textlowercase, belongstoclusterid) FROM stdin;
+COPY hashtag (count, textlowercase, belongstoclusterid, coordinates) FROM stdin;
 \.
 
 
