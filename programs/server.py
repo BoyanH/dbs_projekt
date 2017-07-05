@@ -22,11 +22,18 @@ def getTopTweets():
 @app.route('/hashtag/daily')
 @app.route('/hashtag/daily/<hashtag>')
 def getDaily(hashtag=None):
-    if not hashtag:
+    if not hashtag or hashtag == '':
         return HashtagTimeline.dailyTotalHashtags()
     else:
-        return "todo"
+        return HashtagTimeline.dailyHashtag(hashtag)
 
+@app.route('/hashtag/weekly')
+@app.route('/hashtag/weekly/<hashtag>')
+def getWeekly(hashtag=None):
+    if not hashtag or hashtag == '':
+        return HashtagTimeline.weeklyTotalHashtags()
+    else:
+        return HashtagTimeline.weeklyHashtag(hashtag)
 
 if __name__ == '__main__':
 

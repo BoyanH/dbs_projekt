@@ -99,7 +99,7 @@ class DBController:
 
 	def getDatesForHashtag(self, hashTagText, dateTable):
 		dateColumn = Contract.START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DATE_COLUMN
-		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_IN
+		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_ON
 		joinOnDateColumn =	Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
 
 		# Example:
@@ -119,6 +119,22 @@ class DBController:
 		)
 
 		return [x[0] for x in self.cursor.fetchall()]
+
+	def getUsageForHashtag(self, hashtagText, dateTable):
+		dateColumn = Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
+		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_ON
+		dateColumn2 = Contract.START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DATE_COLUMN
+		
+		# Example:
+		# SELECT startdate, SUM(count) FROM week, usedin WHERE startdate = weekstartdate
+		# AND hashtagtext='votetrump2016' GROUP BY startdate;
+
+		self.cursor.execute("SELECT {0}, SUM({1}) FROM {2}, {3}  WHERE {0} = {4} AND {5} = '{6}' GROUP BY {0}".format(
+									dateColumn, Contract.COUNT_COLUMN,		#SELECT
+									dateTable,middleTable,					#FROM
+									dateColumn2, Contract.HASHTAG_TEXT_COLUMN, hashtagText))	#WHERE .. GROUP BY 
+
+		return [x for x in self.cursor.fetchall()]
 
 	def getTotalHashtagUsage(self, dateTable):
 		dateColumn = Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
