@@ -16,7 +16,7 @@ class DBController:
 
 	def __init__(self):
 		print("Connected to DB!")
-		self.connection = psycopg2.connect(DBController.connectionString)    
+		self.connection = psycopg2.connect(DBController.connectionString)	 
 		self.cursor = self.connection.cursor()
 
 	def addToDB(self, table, entriesDict):
@@ -60,9 +60,9 @@ class DBController:
 		del data[Contract.ADD_TO_TABLE_KEY]
 		self.addToDB(table, data)
 		# try:
-		# 	self.addToDB(table, data)
+		#	self.addToDB(table, data)
 		# except Exception as err:
-		# 	print("Something went wrong: " + str(err))
+		#	print("Something went wrong: " + str(err))
 
 
 	def addMultiple(self, *tableLists):
@@ -100,7 +100,12 @@ class DBController:
 	def getDatesForHashtag(self, hashTagText, dateTable):
 		dateColumn = Contract.START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DATE_COLUMN
 		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_IN
-		joinOnDateColumn =  Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
+		joinOnDateColumn =	Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
+
+		# Example:
+		# SELECT startdate FROM hashtag, week, usedin 
+		# WHERE hashtagtext = textlowercase AND date = startdate 
+		# AND hashtagtext = 'votetrump2016'
 
 		self.cursor.execute("SELECT {0} FROM {1} WHERE {2}".format(
 			dateColumn, 
@@ -114,6 +119,18 @@ class DBController:
 		)
 
 		return [x[0] for x in self.cursor.fetchall()]
+
+	def getTotalHashtagUsage(self, dateTable):
+		dateColumn = Contract.WEEK_START_DATE_COLUMN if dateTable == Contract.TABLE_WEEK else Contract.DAY_DATE_COLUMN
+		middleTable = Contract.TABLE_USED_IN if dateTable == Contract.TABLE_WEEK else Contract.TABLE_USED_ON
+	
+		# Example:
+		# SELECT weekstartdate, SUM(count) FROM usedin GROUP BY weekstartdate
+
+		self.cursor.execute("SELECT {0}, SUM({1}) FROM {2} GROUP BY {3}".format(
+									dateColumn, Contract.COUNT_COLUMN, middleTable, dateColumn))
+
+		return [x for x in self.cursor.fetchall()]
 
 	def getUsedTogetherWithPairsForHashtag(self, hashTagText):
 		self.cursor.execute("SELECT {0} FROM {1} WHERE {2}".format(
