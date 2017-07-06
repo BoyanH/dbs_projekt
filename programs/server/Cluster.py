@@ -4,7 +4,6 @@ from Contract import Contract
 import numpy as np
 from random import randint
 from sklearn.manifold import TSNE
-from ClusteringRepresentation import ClusteringRepresentation
 
 CLUSTERS_COUNT = 7
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
@@ -95,6 +94,8 @@ class Cluster:
 		#	if they were not used together. For us this is not THAT relevant for the clustering, but yeah...
 
 		htTexts = [x for x in self.htVectors.keys()]
+		dbInsertEntries = []
+		maxDistanceBetweenHT = 0
 
 		# for all unique ht pairs
 		for i in range(0, len(htTexts)):
@@ -107,9 +108,14 @@ class Cluster:
 					continue
 
 				distanceBetweenHTs = np.linalg.norm(np.array(self.htVectors[htA]) - np.array(self.htVectors[htB]))
-				edgeWidth = ClusteringRepresentation.getEdgeWidthFromDistance(distanceBetweenHTs)
-				self.dBController.addRepresentationEdge(htA, htB, self.clusterIDForHT[htA], edgeWidth)
 
+				if distanceBetweenHTs > maxDistanceBetweenHT:
+					maxDistanceBetweenHT = distanceBetweenHTs
+
+				dbInsertEntries.append( (htA, htB, self.clusterIDForHT[htA], distanceBetweenHTs) )
+
+		for entry in dbInsertEntries:
+			self.dBController.addRepresentationEdge(entry[0], entry[1], entry[2], maxDistanceBetweenHT / entry[3])
 		self.dBController.connection.commit()
 
 
