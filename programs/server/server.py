@@ -1,10 +1,12 @@
 #!/bin/python3.6
 from flask import Flask
+from flask import send_from_directory
 from cleaner import cleanData
 from DBController import DBController
 from TableParser import TableParser
 from Cluster import Cluster
 import HashtagTimeline
+import os
 
 app = Flask(__name__)
 port = 5234
@@ -12,7 +14,8 @@ host = '127.0.0.1'
 
 @app.route('/')
 def index():
-    return 'Hello world'
+    root_dir = os.path.dirname(os.getcwd())
+    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
 @app.route('/topTweets')
 def getTopTweets():
@@ -34,6 +37,12 @@ def getWeekly(hashtag=None):
         return HashtagTimeline.weeklyTotalHashtags()
     else:
         return HashtagTimeline.weeklyHashtag(hashtag)
+
+@app.route('/public/<path:filename>')
+def serve_static(filename):
+    root_dir = os.path.dirname(os.getcwd())
+    return send_from_directory(os.path.join(root_dir, 'client'), filename)
+
 
 if __name__ == '__main__':
 
