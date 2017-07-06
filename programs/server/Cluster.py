@@ -2,8 +2,10 @@ from DBController import DBController
 from Utils import Utils
 from Contract import Contract
 import numpy as np
+import json
 from random import randint
 from sklearn.manifold import TSNE
+
 
 CLUSTERS_COUNT = 7
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
@@ -90,7 +92,7 @@ class Cluster:
 
 	def calculateEdgesBetweenHTs(self):
 		# calculate all edges between hashtags and their width
-		#	!IMPORTANT 	here we apply the constraint that no connection should exist between hashtags
+		#	!IMPORTANT	here we apply the constraint that no connection should exist between hashtags
 		#	if they were not used together. For us this is not THAT relevant for the clustering, but yeah...
 
 		htTexts = [x for x in self.htVectors.keys()]
@@ -269,6 +271,47 @@ class Cluster:
 			idx += 1
 
 		return (np.array(vectorSpace), keyToIdx)
+	
+	@staticmethod
+	def fromDBtoJSON():
+		dbc = DBController()
+		
+		raw_nodes = dbc.getClusterCoordinates()
+		raw_edges = dbc.getEdgeSizes()
+
+		nodes = []
+		edges = []
+
+		colors = ['#0000A0', "#ADD8E6", "#800080", '#FFA500', "a52a2a",
+					"00ff00", "FF00FF", "ffe87c", "571b7e"]
+
+		cluster_colors = {}
+		
+		# map colors to cluster id
+		for node in raw_nodes:
+			if node[1] not in cluster_colors.keys():
+				cluster_colors[node[1]] = colors[len(cluster_colors)]
+		
+
+		for node in raw_nodes:
+			nodes.append({	'id': node[0], 
+							'label': node[0],
+							'color': cluster_colors[node[1]],
+							'x':node[2][0], 
+							'y':node[2][1],
+							'size': 1})
+		
+		counter = 0
+		for edge in raw_edges:
+			edges.append({	'id': str(counter),
+							'source': edge[0],
+							'target': edge[1]})   #,
+							#'size' : edge[2]})
+
+			counter += 1
+
+		dbc.close()
+		return json.dumps({'nodes':nodes, 'edges': edges}, indent=4)
 
 	@staticmethod
 	def orderVectorSpaceIntoDict(vectorSpace, keyToIdxDict):

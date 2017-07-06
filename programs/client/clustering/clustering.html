@@ -1,2 +1,24 @@
-<h3>this is the clustering</h3>
-<h3>this is asd {{asd}}</h3>
+<html>
+<head>
+<style type="text/css">
+  #container {
+    max-width: 1400px;
+    height: 900px;
+    margin: auto;
+  }
+</style>
+</head>
+<body>
+<div id="container"></div>
+<script src="/public/bower_components/sigma.js/sigma.min.js"></script>
+<script src="/public/bower_components/sigma.js/plugins/sigma.parsers.json.min.js"></script>
+<script>
+  sigma.parsers.json('data.json', {
+    container: 'container',
+    settings: {
+      defaultNodeColor: '#ec5148'
+    }
+  });
+</script>
+</body>
+</html>
