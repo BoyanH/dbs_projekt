@@ -282,24 +282,36 @@ class Cluster:
 		nodes = []
 		edges = []
 
+		colors = ['#0000A0', "#ADD8E6", "#800080", '#FFA500', "a52a2a",
+					"00ff00", "FF00FF", "ffe87c", "571b7e"]
+
+		cluster_colors = {}
+		
+		# map colors to cluster id
+		for node in raw_nodes:
+			if node[1] not in cluster_colors.keys():
+				cluster_colors[node[1]] = colors[len(cluster_colors)]
+		
+
 		for node in raw_nodes:
 			nodes.append({	'id': node[0], 
-							'label': node[0], 
+							'label': node[0],
+							'color': cluster_colors[node[1]],
 							'x':node[2][0], 
 							'y':node[2][1],
 							'size': 1})
 		
 		counter = 0
 		for edge in raw_edges:
-			edges.append({	'id': counter,
+			edges.append({	'id': str(counter),
 							'source': edge[0],
-							'target': edge[1],
-							'size' : edge[2]})
+							'target': edge[1]})   #,
+							#'size' : edge[2]})
 
 			counter += 1
 
 		dbc.close()
-		return json.dumps({'nodes':nodes, 'edges': edges})
+		return json.dumps({'nodes':nodes, 'edges': edges}, indent=4)
 
 	@staticmethod
 	def orderVectorSpaceIntoDict(vectorSpace, keyToIdxDict):

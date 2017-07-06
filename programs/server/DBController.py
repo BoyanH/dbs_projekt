@@ -149,20 +149,29 @@ class DBController:
 		return [x for x in self.cursor.fetchall()]
 
 	def getClusterCoordinates(self):
-		
+	
+		# SELECT textlowercase, belogstoclusterid. coordinates2d
+		# FROM hasgtag
+
+		self.cursor.execute("SELECT {0}, {1}, {2} FROM {3}".format(
+			Contract.TEXT_LOWER_CASE_COLUMN, Contract.BELONGS_TO_CLUSTER_ID, 
+			Contract.COORDINATES_2D_COLUMN, Contract.TABLE_HASHTAG))
+
+		return self.cursor.fetchall()
+
 		# Example:
 		# SELECT textlowercase, hashtag.belongstoclusterid, coordinates2d, edgewidth 
 		# FROM representationedge, hashtag 
 		# WHERE representationedge.belongstoclusterid = hashtag.belongstoclusterid 
 		# AND (textlowercase = hashtag1 OR textlowercase = hashtag2);
 
-		self.cursor.execute("SELECT {0}, {1}.{2}, {3}, {4} FROM {5}, {1} WHERE {5}.{2} = {1}.{2} AND ({0} = {6} OR {0} = {7})".format(
-			Contract.HASHTAG_TEXT_COLUMN, Contract.TABLE_HASHTAG, Contract.BELONGS_TO_CLUSTER_ID, #SELECT
-			Contract.COORDINATES_2D_COLUMN, Contract.EDGE_WIDTH_COLUMN, 
-			Contract.TABLE_REPRESENTATION_EDGE,						#FROM
-			Contract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN))	#WHERE
+		#self.cursor.execute("SELECT {0}, {1}.{2}, {3}, {4} FROM {5}, {1} WHERE {5}.{2} = {1}.{2} AND ({0} = {6} OR {0} = {7})".format(
+		#	Contract.TEXT_LOWER_CASE_COLUMN, Contract.TABLE_HASHTAG, Contract.BELONGS_TO_CLUSTER_ID, #SELECT
+		#	Contract.COORDINATES_2D_COLUMN, Contract.EDGE_WIDTH_COLUMN, 
+		#	Contract.TABLE_REPRESENTATION_EDGE,						#FROM
+		#	Contract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN))	#WHERE
 
-		return self.cursor.fetchall()
+		#return self.cursor.fetchall()
 
 	def getEdgeSizes(self):
 
@@ -171,9 +180,9 @@ class DBController:
 		# FROM representationedge
 
 		self.cursor.execute("SELECT {0}, {1}, {2} FROM {3}".format(
-				Cotract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN, Contract.EDGE_WIDTH_COLUMN, Contract.TABLE_REPRESENTATION_EDGE))
+				Contract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN, Contract.EDGE_WIDTH_COLUMN, Contract.TABLE_REPRESENTATION_EDGE))
 
-		return cur.fetchall()
+		return self.cursor.fetchall()
 
 
 
