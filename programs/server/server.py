@@ -17,6 +17,16 @@ def index():
     root_dir = os.path.dirname(os.getcwd())
     return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
+@app.route('/clustering')
+def clustering():
+    root_dir = os.path.dirname(os.getcwd())
+    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+
+@app.route('/timeline')
+def timeline():
+    root_dir = os.path.dirname(os.getcwd())
+    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+
 @app.route('/topTweets')
 def getTopTweets():
     topTweets = dbController.getTopTweets()
