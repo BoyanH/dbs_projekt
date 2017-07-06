@@ -1,0 +1,8 @@
+{
+  "name": "election-data-mining",
+  "description": "Data mining for hashtag relativity using elections' twitter posts",
+  "image": "heroku/python",
+  "repository": "https://github.com/gancia-kiss/dbs_projekt",
+  "keywords": ["python" ],
+  "addons": [ "heroku-postgresql" ]
+}
