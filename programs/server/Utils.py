@@ -31,4 +31,13 @@ class Utils:
 			escapedString = str(entriesDict[key]).replace('`', '\\`').replace('\'', '\\`')
 			sqlValuesArr.append('\'{0}\''.format( escapedString ))
 		return ', '.join(sqlValuesArr)
+
+	@staticmethod
+	def flattenArrayOfTuples(arr):
+		result = []
+		for tup in arr:
+			for i in range(0, 2):
+				result.append(tup[i])
+
+		return result
 	

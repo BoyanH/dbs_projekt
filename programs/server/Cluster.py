@@ -1,8 +1,10 @@
 from DBController import DBController
+from Utils import Utils
 from Contract import Contract
 import numpy as np
 from random import randint
 from sklearn.manifold import TSNE
+from ClusteringRepresentation import ClusteringRepresentation
 
 CLUSTERS_COUNT = 7
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
@@ -16,9 +18,14 @@ TSNE_PERPLEXITY = 30.0
 class Cluster:
 
 	def __init__(self):
-		self.dBController = DBController();
+		self.dBController = DBController()
 		self.hashtagTexts = self.dBController.getHashtagTexts()
 		self.dates = self.dBController.getDates(DATE_TABLE)
+
+		self.datesForHT = {}
+		self.usedWithPairsForHT = {}
+
+		self.clusterIDForHT = {}
 
 		hashtagDimensionMapper = {}
 		dayDimensionMapper = {}
@@ -32,6 +39,10 @@ class Cluster:
 			dayDimensionMapper[date] = counter
 			counter += 1 
 
+		for ht in self.hashtagTexts:
+			self.datesForHT[ht] = self.dBController.getDatesForHashtag(ht, DATE_TABLE)
+			self.usedWithPairsForHT[ht] = self.dBController.getUsedTogetherWithPairsForHashtag(ht)
+
 		self.hashtagDimensionMapper = hashtagDimensionMapper
 		self.dayDimensionMapper = dayDimensionMapper
 		self.dimensions = counter
@@ -40,9 +51,9 @@ class Cluster:
 		self.htVectors = self.updateHashtagVectors()
 
 		for ht in self.htVectors:
-			self.dBController.updateHashtagVector(ht, self.htVectors[ht]);
+			self.dBController.updateHashtagVector(ht, self.htVectors[ht])
 
-		self.dBController.connection.commit();
+		self.dBController.connection.commit()
 
 		print('Executing k-means algorithm...')
 
@@ -52,18 +63,55 @@ class Cluster:
 		for center in self.clusterCenters:
 			self.dBController.addClusterCenter(center)
 
-		self.dBController.connection.commit();
+		self.dBController.connection.commit()
 
 		for ht in self.clustersForHt:
-			centerId = self.dBController.getClusterCenterId(self.clustersForHt[ht]);
+			centerId = self.dBController.getClusterCenterId(self.clustersForHt[ht])
 			self.dBController.addHashtagToCluster(ht, centerId)
+			self.clusterIDForHT[ht] = centerId
 
-		self.dBController.connection.commit();
+		self.dBController.connection.commit()
 
 		self.calculate2DPlot()
 
 	def calculate2DPlot(self):
 		print('Calculating 2D plotting')
+		self.calculate2DHTCoordinates();
+		self.calculateEdgesBetweenHTs();
+
+	def calculate2DHTCoordinates(self):
+		# add 2d coordinates for each hashtag
+
+		self.htVectors2D = Cluster.reduceVectorDimensions(self.htVectors, 2)
+
+		for ht in self.htVectors:
+			self.dBController.updateHashtagVector(ht, self.htVectors[ht])
+
+		self.dBController.connection.commit()
+
+	def calculateEdgesBetweenHTs(self):
+		# calculate all edges between hashtags and their width
+		#	!IMPORTANT 	here we apply the constraint that no connection should exist between hashtags
+		#	if they were not used together. For us this is not THAT relevant for the clustering, but yeah...
+
+		htTexts = [x for x in self.htVectors.keys()]
+
+		# for all unique ht pairs
+		for i in range(0, len(htTexts)):
+			for j in range(i, len(htTexts)):
+				htA = htTexts[i]
+				htB = htTexts[j]
+
+				# if the constraint is not met OR both hashtags don't belong to the same cluster, don't add an edge
+				if not htB in Utils.flattenArrayOfTuples(self.usedWithPairsForHT[htA]) or self.clusterIDForHT[htA] != self.clusterIDForHT[htB] or htA == htB:
+					continue
+
+				distanceBetweenHTs = np.linalg.norm(np.array(self.htVectors[htA]) - np.array(self.htVectors[htB]))
+				edgeWidth = ClusteringRepresentation.getEdgeWidthFromDistance(distanceBetweenHTs)
+				self.dBController.addRepresentationEdge(htA, htB, self.clusterIDForHT[htA], edgeWidth)
+
+		self.dBController.connection.commit()
+
 
 
 	def updateHashtagVectors(self):
@@ -75,8 +123,8 @@ class Cluster:
 
 		for ht in self.hashtagTexts:
 
-			dates = self.dBController.getDatesForHashtag(ht, DATE_TABLE)
-			pairs = self.dBController.getUsedTogetherWithPairsForHashtag(ht)
+			dates = self.datesForHT[ht]
+			pairs = self.usedWithPairsForHT[ht]
 
 			for date in dates:
 				dimensionForDate = self.dayDimensionMapper[date]
@@ -91,7 +139,7 @@ class Cluster:
 
 		reducedVectors = Cluster.reduceVectorDimensions(htVectors, REDUCED_DIMENSIONS_AMOUNT)
 
-		return reducedVectors;
+		return reducedVectors
 
 	def getClusterCenters(self):
 
@@ -109,7 +157,7 @@ class Cluster:
 				clusterCoordinates.append(currentClusterCenter)
 
 
-		return clusterCoordinates;
+		return clusterCoordinates
 
 	def executeKMeans(self):
 		oldCenters = []

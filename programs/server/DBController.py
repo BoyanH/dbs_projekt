@@ -181,7 +181,7 @@ class DBController:
 
 	def addClusterCenter(self, center):
 		sqlInsertExpr = "INSERT INTO {0} ({1}) VALUES ({2})"
-		sqlInsertCommand = sqlInsertExpr.format(Contract.TABLE_CLUSTER, Contract.CENTER_COORDINATES, '\'{' + ', '.join([str(x) for x in center]) + '}\'')
+		sqlInsertCommand = sqlInsertExpr.format(Contract.TABLE_CLUSTER, Contract.CENTER_COORDINATES, DBController.getSQLArrayFromList(center))
 
 		self.cursor.execute(sqlInsertCommand)
 
@@ -198,6 +198,16 @@ class DBController:
 
 		return [x[0] for x in self.cursor.fetchall()][0]
 
+	def addRepresentationEdge(self, htA, htB, clusterId, edgeWidth):
+		sqlInsertExpr = "INSERT INTO {0} ({1}) VALUES ({2})"
+		sqlInsertCommand = sqlInsertExpr.format(
+			Contract.TABLE_REPRESENTATION_EDGE, # INSERT INTO
+			','.join([Contract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN, Contract.BELONGS_TO_CLUSTER_ID, Contract.EDGE_WIDTH_COLUMN]), # VALUES (...)
+			', '.join(["'{}'".format(str(x)) for x in [htA, htB, clusterId, edgeWidth] ]) # (...)
+		)
+
+		self.cursor.execute(sqlInsertCommand)
+
 
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):
@@ -209,3 +219,6 @@ class DBController:
 
 		return ' AND '.join(conditions)
 
+	@staticmethod
+	def getSQLArrayFromList(arr):
+		return '\'{' + ', '.join([str(x) for x in arr]) + '}\''
