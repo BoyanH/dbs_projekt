@@ -1,6 +1,8 @@
-htViewerApp.controller('MainController', function($scope) {
+htViewerApp.controller('MainController', function($scope, $location) {
         
-	// add code, export variables in templates via $scope
-	console.log('Main controller loaded')
+	 $scope.isActive = function (viewLocation) { 
+	 	console.log($location.path());
+        return viewLocation === $location.path();
+    };
 
 });
