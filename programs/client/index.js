@@ -1,9 +1,13 @@
-var htViewerApp = angular.module('htViewerApp', ['ngRoute']);
+var htViewerApp = angular.module('htViewerApp', ['ngResource', 'ngRoute']);
 
 console.log('angular added');
 
 // configure our routes
 htViewerApp.config(function($routeProvider) {
+
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
     $routeProvider
 
         // route for the home page
@@ -22,10 +26,11 @@ htViewerApp.config(function($routeProvider) {
         .when('/timeline', {
             templateUrl : '/public/timeline/timeline.html',
             controller  : 'TimeLineController'
-        });
+        }).otherwise({redirectTo:'/'});
 });
 
 htViewerApp.run(function($rootScope, $location){
+    console.log('app run');
     var history = [];
 
     $rootScope.$on('$routeChangeSuccess', function() {

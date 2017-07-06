@@ -50,7 +50,7 @@ class Cluster:
 		self.htVectors = self.updateHashtagVectors()
 
 		for ht in self.htVectors:
-			self.dBController.updateHashtagVector(ht, self.htVectors[ht])
+			self.dBController.updateHashtagVector(ht, self.htVectors[ht], Contract.COORDINATES_COLUMN)
 
 		self.dBController.connection.commit()
 
@@ -84,7 +84,7 @@ class Cluster:
 		self.htVectors2D = Cluster.reduceVectorDimensions(self.htVectors, 2)
 
 		for ht in self.htVectors:
-			self.dBController.updateHashtagVector(ht, self.htVectors[ht])
+			self.dBController.updateHashtagVector(ht, self.htVectors2D[ht], Contract.COORDINATES_2D_COLUMN)
 
 		self.dBController.connection.commit()
 

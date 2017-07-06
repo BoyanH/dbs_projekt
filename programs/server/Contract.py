@@ -40,6 +40,7 @@ class Contract:
 	BELONGS_TO_CLUSTER_ID = 'belongstoclusterid'
 	CENTER_COORDINATES = 'centercoordinates'
 	COORDINATES_COLUMN = 'coordinates'
+	COORDINATES_2D_COLUMN = 'coordinates2d'
 
 	TEXT_ENTRY = TEXT_COLUMN
 	HANDLE_ENTRY = 'handle'

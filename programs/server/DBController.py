@@ -161,11 +161,11 @@ class DBController:
 
 		return self.cursor.fetchall()
 
-	def updateHashtagVector(self, hashTagText, vector):
+	def updateHashtagVector(self, hashTagText, vector, column):
 		sqlUpdateExpr = "UPDATE {0} SET {1}={2} WHERE {3}"
 		sqlUpdateCommand = sqlUpdateExpr.format(
 			Contract.TABLE_HASHTAG, 
-			Contract.COORDINATES_COLUMN, '\'{' + ', '.join([str(x) for x in vector]) + '}\'',
+			column, '\'{' + ', '.join([str(x) for x in vector]) + '}\'',
 			'{0} = \'{1}\''.format(Contract.TEXT_LOWER_CASE_COLUMN, hashTagText)
 		)
 

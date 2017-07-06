@@ -6,9 +6,10 @@
     <title>Twitter Hashtag Clustering</title>
     <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/public/css/layout.css">
 </head>
 
-<body>
+<body ng-app="htViewerApp">
 
     <div id="main">
 
@@ -16,7 +17,7 @@
 
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a href="#/" class="navbar-brand">The top 3</a> </div>
+                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-6" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a href="#" class="navbar-brand">The top 3</a> </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#/clustering">Clustering</a>
@@ -29,13 +30,14 @@
 
         </nav>
 
-        <div ng-view></div>
+        <div class="view-wrapper" ng-view></div>
 
     </div>
 
 
     <script type="text/javascript" src="/public/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/public/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/public/bower_components/angular-resource/angular-resource.min.js"></script>
     <script type="text/javascript" src="/public/bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="/public/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/public/index.js"></script>
