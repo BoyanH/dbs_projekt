@@ -162,8 +162,8 @@ class TableParser:
 	@staticmethod
 	def parseTables():
 		dbController = DBController()
-		root_dir = os.path.dirname(os.getcwd())
-		explicitPathRead = os.path.join(root_dir, Contract.CSV_CLEAN)
+		dir_path = os.path.dirname(os.path.realpath(__file__))
+		explicitPathRead = os.path.join(dir_path, Contract.CSV_CLEAN)
 
 		csvfile = open(explicitPathRead, 'r', encoding='cp1252')
 		csv_reader = csv.DictReader(csvfile, delimiter=';', quotechar='"')

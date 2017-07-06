@@ -14,18 +14,20 @@ host = '0.0.0.0'
 
 @app.route('/')
 def index():
-    root_dir = os.path.dirname(os.getcwd())
-    print(os.path.join(root_dir, 'client'));
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(os.path.join(dir_path, '../client'));
     return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
 @app.route('/clustering')
 def clustering():
-    root_dir = os.path.dirname(os.getcwd())
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(os.path.join(dir_path, '../client'));
     return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
 @app.route('/timeline')
 def timeline():
-    root_dir = os.path.dirname(os.getcwd())
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    print(os.path.join(dir_path, '../client'));
     return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
 @app.route('/topTweets')

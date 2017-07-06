@@ -3,10 +3,10 @@ from Contract import Contract
 import os
 
 def cleanData():
+	dir_path = os.path.dirname(os.path.realpath(__file__))
 	filepath = Contract.CSV_INITIAL
-	root_dir = os.path.dirname(os.getcwd())
-	explicitPathRead = os.path.join(root_dir, filepath)
-	explicitPathWrite = os.path.join(root_dir, Contract.CSV_CLEAN)
+	explicitPathRead = os.path.join(dir_path, filepath)
+	explicitPathWrite = os.path.join(dir_path, Contract.CSV_CLEAN)
 
 	csvfile = open(explicitPathRead, "r", encoding="cp1252")
 	csv_filewrite = open(explicitPathWrite, "w+", encoding="cp1252")
