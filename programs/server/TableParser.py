@@ -3,6 +3,7 @@ from DBController import DBController
 from Extractor import Extractor
 from Utils import Utils
 from Contract import Contract
+import os
 
 class TableParser:
 
@@ -161,9 +162,10 @@ class TableParser:
 	@staticmethod
 	def parseTables():
 		dbController = DBController()
+		root_dir = os.path.dirname(os.getcwd())
+		explicitPathRead = os.path.join(root_dir, Contract.CSV_CLEAN)
 
-		filepath = Contract.CSV_CLEAN
-		csvfile = open(filepath, 'r', encoding='cp1252')
+		csvfile = open(explicitPathRead, 'r', encoding='cp1252')
 		csv_reader = csv.DictReader(csvfile, delimiter=';', quotechar='"')
 
 		for idx, row in enumerate(csv_reader):
