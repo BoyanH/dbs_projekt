@@ -8,7 +8,7 @@ def cleanData():
 	explicitPathRead = os.path.join(root_dir, filepath)
 	explicitPathWrite = os.path.join(root_dir, Contract.CSV_CLEAN)
 
-	csvfile = open(explicitPath, "r", encoding="cp1252")
+	csvfile = open(explicitPathRead, "r", encoding="cp1252")
 	csv_filewrite = open(explicitPathWrite, "w+", encoding="cp1252")
 
 	csv_reader = csv.DictReader(csvfile, delimiter=";", quotechar='"')
