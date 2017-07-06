@@ -3,7 +3,7 @@ var htViewerApp = angular.module('htViewerApp', ['ngResource', 'ngRoute']);
 console.log('angular added');
 
 // configure our routes
-htViewerApp.config(function($routeProvider) {
+htViewerApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 
     $httpProvider.defaults.useXDomain = true;
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
@@ -27,6 +27,9 @@ htViewerApp.config(function($routeProvider) {
             templateUrl : '/public/timeline/timeline.html',
             controller  : 'TimeLineController'
         }).otherwise({redirectTo:'/'});
+
+        // use the HTML5 History API
+        $locationProvider.html5Mode(true);
 });
 
 htViewerApp.run(function($rootScope, $location){
