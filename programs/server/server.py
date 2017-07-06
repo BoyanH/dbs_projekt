@@ -16,7 +16,7 @@ host = '0.0.0.0'
 def index():
     root_dir = os.path.dirname(os.getcwd())
     print(os.path.join(root_dir, 'client'))
-    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+    return app.send_static_file(os.path.join(root_dir, 'client', 'index.html'))
 
 @app.route('/clustering')
 def clustering():
