@@ -57,6 +57,7 @@ def serve_static(filename):
 def clustersJSON():
 	return Cluster.fromDBtoJSON()
 
+
 if __name__ == '__main__':
 
     dbController = DBController()
