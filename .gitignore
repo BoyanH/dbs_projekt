@@ -7,4 +7,5 @@
 *.swp
 *.pyc
 programs/__pycache__
-programs/server/pycache
+programs/server/__pycache__
+*~
