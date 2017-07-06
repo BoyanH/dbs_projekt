@@ -58,9 +58,12 @@ class Cluster:
 			centerId = self.dBController.getClusterCenterId(self.clustersForHt[ht]);
 			self.dBController.addHashtagToCluster(ht, centerId)
 
-
-
 		self.dBController.connection.commit();
+
+		self.calculate2DPlot()
+
+	def calculate2DPlot(self):
+		print('Calculating 2D plotting')
 
 
 	def updateHashtagVectors(self):
@@ -86,7 +89,7 @@ class Cluster:
 					dimensionForHt = self.hashtagDimensionMapper[pair[i]]
 					htVectors[ht][dimensionForHt] += pair[2]*USED_TOGETHER_WITH_WEIGHT #pair[2] = count
 
-		reducedVectors = Cluster.reduceVectorDimensions(htVectors)
+		reducedVectors = Cluster.reduceVectorDimensions(htVectors, REDUCED_DIMENSIONS_AMOUNT)
 
 		return reducedVectors;
 
@@ -185,16 +188,16 @@ class Cluster:
 		return newClusterCenters
 
 	@staticmethod
-	def reduceVectorDimensions(vectorsDictionary):
+	def reduceVectorDimensions(vectorsDictionary, reducedDimensions = REDUCED_DIMENSIONS_AMOUNT):
 		# X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
 
 
 		(vectorSpace, keyToIdx) = Cluster.getVectorSpaceForVectors(vectorsDictionary)
 
-		model = TSNE(n_components = REDUCED_DIMENSIONS_AMOUNT, random_state=0)
+		model = TSNE(n_components = reducedDimensions, random_state=0)
 		np.set_printoptions(suppress=True)
 
-		print("Reducing {0} dimensional vector space into {1} dimensional...".format( str(len(vectorSpace[0])), str(REDUCED_DIMENSIONS_AMOUNT) ))
+		print("Reducing {0} dimensional vector space into {1} dimensional...".format( str(len(vectorSpace[0])), str(reducedDimensions) ))
 		reducedVectorSpace = model.fit_transform(vectorSpace)
 		reducedVectorsDictionary = Cluster.orderVectorSpaceIntoDict(reducedVectorSpace, keyToIdx)
 
