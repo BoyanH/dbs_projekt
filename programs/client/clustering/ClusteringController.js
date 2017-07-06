@@ -1,15 +1,21 @@
 htViewerApp.controller('ClusteringController', function($scope) {
-        
-	// add code, export variables in templates via $scope
-	console.log('Main controller loaded')
-
-	$scope.asd = 2;
-
-
-	setTimeout(function() {
-
-		$scope.asd = 3;
-		$scope.$apply();
-	}, 1000)
+     
+     updateGrapgh();   
+	// $.ajax({
+	// 	method: 'GET',
+	// 	url: '/api/cluster.json'
+	// }).done(function (json) {
+	// 	console.log(json);
+	// 	updateGrapgh(json);
+	// })
 
 });
+
+function updateGrapgh() {
+	sigma.parsers.json('/api/cluster.json', {
+        container: 'container',
+        settings: {
+          defaultNodeColor: '#ec5148'
+        }
+      });
+}

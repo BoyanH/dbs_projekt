@@ -15,8 +15,8 @@ host = '0.0.0.0'
 @app.route('/')
 def index():
     root_dir = os.path.dirname(os.getcwd())
-    print(os.path.join(root_dir, 'client'))
-    return app.send_static_file(os.path.join(root_dir, 'client', 'index.html'))
+    print(os.path.join(root_dir, 'client'));
+    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
 
 @app.route('/clustering')
 def clustering():
@@ -54,9 +54,6 @@ def serve_static(filename):
     root_dir = os.path.dirname(os.getcwd())
     return send_from_directory(os.path.join(root_dir, 'client'), filename)
 
-@app.route('/api/cluster.json')
-def clustersJSON():
-	return Cluster.fromDBtoJSON()
 
 if __name__ == '__main__':
 
@@ -72,5 +69,4 @@ if __name__ == '__main__':
         print('Data already imported :)')
 
 
-    app.secret_key = 'abrakadabra'
     app.run(host=host, port=port)
