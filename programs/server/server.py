@@ -9,8 +9,8 @@ import HashtagTimeline
 import os
 
 app = Flask(__name__)
-port = 5234
-host = '127.0.0.1'
+port = int(os.environ.get("PORT", 5234))
+host = '0.0.0.0'
 
 @app.route('/')
 def index():

@@ -2,14 +2,15 @@ import psycopg2
 import json
 from Contract import Contract
 from Utils import Utils
+import os
 
 
 class DBController:
 
-	dbUser = "testuser"
-	dbName = "Election"
-	host = "localhost"
-	dbUserPassword = "testpass"
+	dbUser = os.environ.get('DB_USER_HEROKU', "testuser")
+	dbName = os.environ.get('DB_NAME_HEROKU', "Election")
+	host = os.environ.get('DB_HOST_HEROKU', "localhost")
+	dbUserPassword = os.environ.get('DB_PASSWORD_HEROKU', "testpass")
 
 	connectionStringTemplate = "dbname='{0}' user='{1}' host='{2}' password='{3}'"
 	connectionString = connectionStringTemplate.format(dbName, dbUser, host, dbUserPassword)
