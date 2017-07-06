@@ -148,6 +148,35 @@ class DBController:
 
 		return [x for x in self.cursor.fetchall()]
 
+	def getClusterCoordinates(self):
+		
+		# Example:
+		# SELECT textlowercase, hashtag.belongstoclusterid, coordinates2d, edgewidth 
+		# FROM representationedge, hashtag 
+		# WHERE representationedge.belongstoclusterid = hashtag.belongstoclusterid 
+		# AND (textlowercase = hashtag1 OR textlowercase = hashtag2);
+
+		self.cursor.execute("SELECT {0}, {1}.{2}, {3}, {4} FROM {5}, {1} WHERE {5}.{2} = {1}.{2} AND ({0} = {6} OR {0} = {7})".format(
+			Contract.HASHTAG_TEXT_COLUMN, Contract.TABLE_HASHTAG, Contract.BELONGS_TO_CLUSTER_ID, #SELECT
+			Contract.COORDINATES_2D_COLUMN, Contract.EDGE_WIDTH_COLUMN, 
+			Contract.TABLE_REPRESENTATION_EDGE,						#FROM
+			Contract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN))	#WHERE
+
+		return self.cursor.fetchall()
+
+	def getEdgeSizes(self):
+
+		# Example:
+		# SELECT hashtag1, hashtag2, edgewidth
+		# FROM representationedge
+
+		self.cursor.execute("SELECT {0}, {1}, {2} FROM {3}".format(
+				Cotract.HASHTAG1_COLUMN, Contract.HASHTAG2_COLUMN, Contract.EDGE_WIDTH_COLUMN, Contract.TABLE_REPRESENTATION_EDGE))
+
+		return cur.fetchall()
+
+
+
 	def getUsedTogetherWithPairsForHashtag(self, hashTagText):
 		self.cursor.execute("SELECT {0} FROM {1} WHERE {2}".format(
 			', '.join([Contract.PRIMARY_HASHTAG_COLUMN, Contract.TOGETHER_WITH_HASHTAG_COLUMN, Contract.COUNT_COLUMN]), 
