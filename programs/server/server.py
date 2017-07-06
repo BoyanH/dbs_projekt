@@ -54,6 +54,10 @@ def serve_static(filename):
     root_dir = os.path.dirname(os.getcwd())
     return send_from_directory(os.path.join(root_dir, 'client'), filename)
 
+@app.route('/api/clusterData')
+def clustersJSON():
+    return Cluster.fromDBtoJSON()
+
 
 
 if __name__ == '__main__':

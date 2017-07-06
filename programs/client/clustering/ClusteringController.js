@@ -12,7 +12,7 @@ htViewerApp.controller('ClusteringController', function($scope) {
 });
 
 function updateGrapgh() {
-	sigma.parsers.json('/api/cluster.json', {
+	sigma.parsers.json('/api/clusterData', {
         container: 'container',
         settings: {
           defaultNodeColor: '#ec5148'
