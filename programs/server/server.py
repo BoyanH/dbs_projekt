@@ -15,20 +15,19 @@ host = '0.0.0.0'
 @app.route('/')
 def index():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    print(os.path.join(dir_path, '../client'));
-    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+    return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
 
 @app.route('/clustering')
 def clustering():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(os.path.join(dir_path, '../client'));
-    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+    return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
 
 @app.route('/timeline')
 def timeline():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     print(os.path.join(dir_path, '../client'));
-    return send_from_directory(os.path.join(root_dir, 'client'), 'index.html')
+    return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
 
 @app.route('/topTweets')
 def getTopTweets():
@@ -53,8 +52,8 @@ def getWeekly(hashtag=None):
 
 @app.route('/public/<path:filename>')
 def serve_static(filename):
-    root_dir = os.path.dirname(os.getcwd())
-    return send_from_directory(os.path.join(root_dir, 'client'), filename)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    return send_from_directory(os.path.join(dir_path, '../client'), filename)
 
 @app.route('/api/clusterData')
 def clustersJSON():

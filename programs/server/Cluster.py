@@ -16,6 +16,8 @@ DATE_TABLE = Contract.TABLE_WEEK
 REDUCED_DIMENSIONS_AMOUNT = 10
 TSNE_PERPLEXITY = 30.0
 
+EDGE_REPRESENTATION_WIDTH_MULTIPLIER = 3
+
 class Cluster:
 
 	def __init__(self):
@@ -305,8 +307,8 @@ class Cluster:
 		for edge in raw_edges:
 			edges.append({	'id': str(counter),
 							'source': edge[0],
-							'target': edge[1]})   #,
-							#'size' : edge[2]})
+							'target': edge[1],
+							'size' : edge[2] * EDGE_REPRESENTATION_WIDTH_MULTIPLIER })
 
 			counter += 1
 
