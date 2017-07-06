@@ -55,6 +55,7 @@ def serve_static(filename):
     return send_from_directory(os.path.join(root_dir, 'client'), filename)
 
 
+
 if __name__ == '__main__':
 
     dbController = DBController()
