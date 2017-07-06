@@ -39,8 +39,8 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE cluster (
-    centercoordinates integer[],
-    id integer NOT NULL
+    id integer NOT NULL,
+    centercoordinates real[]
 );
 
 
@@ -111,8 +111,8 @@ ALTER TABLE day OWNER TO postgres;
 CREATE TABLE hashtag (
     count integer,
     textlowercase character varying(40) NOT NULL,
-    coordinates integer[],
-    belongstoclusterid integer
+    belongstoclusterid integer,
+    coordinates real[]
 );
 
 
@@ -254,7 +254,7 @@ ALTER TABLE ONLY cluster ALTER COLUMN id SET DEFAULT nextval('cluster_id_seq1'::
 -- Data for Name: cluster; Type: TABLE DATA; Schema: public; Owner: hristov
 --
 
-COPY cluster (centercoordinates, id) FROM stdin;
+COPY cluster (id, centercoordinates) FROM stdin;
 \.
 
 
@@ -269,7 +269,7 @@ SELECT pg_catalog.setval('cluster_id_seq', 1, false);
 -- Name: cluster_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: hristov
 --
 
-SELECT pg_catalog.setval('cluster_id_seq1', 1, true);
+SELECT pg_catalog.setval('cluster_id_seq1', 115, true);
 
 
 --
@@ -292,7 +292,7 @@ COPY day (date) FROM stdin;
 -- Data for Name: hashtag; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY hashtag (count, textlowercase, coordinates, belongstoclusterid) FROM stdin;
+COPY hashtag (count, textlowercase, belongstoclusterid, coordinates) FROM stdin;
 \.
 
 

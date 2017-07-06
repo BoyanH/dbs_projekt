@@ -168,7 +168,8 @@ class TableParser:
 
 		for idx, row in enumerate(csv_reader):
 		    TableParser.parseRow(row, dbController)
-		    print("Parsed {} rows...".format(idx))
+		    if idx % 500 == 0:
+			    print("Parsed {} rows...".format(idx))
 
 		dbController.close()
 

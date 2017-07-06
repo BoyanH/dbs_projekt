@@ -2,12 +2,16 @@ from DBController import DBController
 from Contract import Contract
 import numpy as np
 from random import randint
+from sklearn.manifold import TSNE
 
 CLUSTERS_COUNT = 7
 IGNORABLE_CLUSTER_MOVE_DISTANCE = 1
 USED_TOGETHER_WITH_WEIGHT = 1
 DATE_WEIGHT = 3
 DATE_TABLE = Contract.TABLE_WEEK
+
+REDUCED_DIMENSIONS_AMOUNT = 10
+TSNE_PERPLEXITY = 30.0
 
 class Cluster:
 
@@ -39,6 +43,8 @@ class Cluster:
 			self.dBController.updateHashtagVector(ht, self.htVectors[ht]);
 
 		self.dBController.connection.commit();
+
+		print('Executing k-means algorithm...')
 
 		self.clusterCenters = self.getClusterCenters()
 		self.clustersForHt = self.executeKMeans()
@@ -80,7 +86,9 @@ class Cluster:
 					dimensionForHt = self.hashtagDimensionMapper[pair[i]]
 					htVectors[ht][dimensionForHt] += pair[2]*USED_TOGETHER_WITH_WEIGHT #pair[2] = count
 
-		return htVectors;
+		reducedVectors = Cluster.reduceVectorDimensions(htVectors)
+
+		return reducedVectors;
 
 	def getClusterCenters(self):
 
@@ -175,4 +183,43 @@ class Cluster:
 			newClusterCenters[i] = np.rint(np.divide(newClusterCenters[i], countOfHtForNewClusterCenterByIdx[i])).astype(int).tolist()
 
 		return newClusterCenters
+
+	@staticmethod
+	def reduceVectorDimensions(vectorsDictionary):
+		# X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
+
+
+		(vectorSpace, keyToIdx) = Cluster.getVectorSpaceForVectors(vectorsDictionary)
+
+		model = TSNE(n_components = REDUCED_DIMENSIONS_AMOUNT, random_state=0)
+		np.set_printoptions(suppress=True)
+
+		print("Reducing {0} dimensional vector space into {1} dimensional...".format( str(len(vectorSpace[0])), str(REDUCED_DIMENSIONS_AMOUNT) ))
+		reducedVectorSpace = model.fit_transform(vectorSpace)
+		reducedVectorsDictionary = Cluster.orderVectorSpaceIntoDict(reducedVectorSpace, keyToIdx)
+
+		return reducedVectorsDictionary
+
+	@staticmethod
+	def getVectorSpaceForVectors(vectorsDictionary):
+		vectorSpace = []
+		idx = 0
+		keyToIdx = {}
+
+		for vKey in vectorsDictionary:
+			vectorSpace.append(vectorsDictionary[vKey])
+			keyToIdx[vKey] = idx
+			idx += 1
+
+		return (np.array(vectorSpace), keyToIdx)
+
+	@staticmethod
+	def orderVectorSpaceIntoDict(vectorSpace, keyToIdxDict):
+		vectorSpaceDict = {}
+
+		for key in keyToIdxDict:
+			index = keyToIdxDict[key]
+			vectorSpaceDict[key] = vectorSpace[index].tolist()
+
+		return vectorSpaceDict
 
