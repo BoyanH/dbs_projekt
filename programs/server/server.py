@@ -68,4 +68,5 @@ if __name__ == '__main__':
         print('Data already imported :)')
 
 
+    app.secret_key = 'abrakadabra'
     app.run(host=host, port=port)
