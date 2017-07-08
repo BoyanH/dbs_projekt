@@ -22,34 +22,34 @@ date_handler = lambda obj: (
 
 @app.route('/topTweets')
 def getTopTweets():
-	topTweets = dbController.getTopTweets()
-	return 'Top tweets: <br><br>' + '<br><br>'.join(str(e) for e in topTweets)
+    topTweets = dbController.getTopTweets()
+    return 'Top tweets: <br><br>' + '<br><br>'.join(str(e) for e in topTweets)
 
 @app.route('/hashtag/daily')
 @app.route('/hashtag/daily/<hashtag>')
 def getDaily(hashtag=None):
-	if not hashtag or hashtag == '':
-		return HashtagTimeline.dailyTotalHashtags()
-	else:
-		return HashtagTimeline.dailyHashtag(hashtag)
+    if not hashtag or hashtag == '':
+        return HashtagTimeline.dailyTotalHashtags()
+    else:
+        return HashtagTimeline.dailyHashtag(hashtag)
 
 @app.route('/hashtag/weekly')
 @app.route('/hashtag/weekly/<hashtag>')
 def getWeekly(hashtag=None):
-	if not hashtag or hashtag == '':
-		return HashtagTimeline.weeklyTotalHashtags()
-	else:
-		return HashtagTimeline.weeklyHashtag(hashtag)
+    if not hashtag or hashtag == '':
+        return HashtagTimeline.weeklyTotalHashtags()
+    else:
+        return HashtagTimeline.weeklyHashtag(hashtag)
 
 @app.route('/public/<path:filename>')
 def serve_static(filename):
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	return send_from_directory(os.path.join(dir_path, '../client'), filename)
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    return send_from_directory(os.path.join(dir_path, '../client'), filename)
 
 @app.route('/api/clusterData')
 @app.route('/api/clusterData/<hashtag>')
 def clustersJSON(hashtag=None):
-	return Cluster.fromDBtoJSON(hashtag=hashtag)
+    return Cluster.fromDBtoJSON(hashtag=hashtag)
 
 @app.route('/api/authors')
 def getAuthors():
@@ -109,15 +109,15 @@ def index(err):
 
 if __name__ == '__main__':
 
-	dbController = DBController()
-	filled = dbController.checkFilled()
-	dbController.close();
+    dbController = DBController()
+    filled = dbController.checkFilled()
+    dbController.close();
 
-	if not filled:
-		cleanData()
-		TableParser.parseTables()
-		Cluster().calculateClusters()
-	else:
-		print('Data already imported :)')
+    if not filled:
+        cleanData()
+        TableParser.parseTables()
+        Cluster().calculateClusters()
+    else:
+        print('Data already imported :)')
 
-	app.run(host=host, port=port)
+    app.run(host=host, port=port)

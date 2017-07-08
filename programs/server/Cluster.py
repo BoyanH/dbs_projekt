@@ -16,7 +16,7 @@ DATE_TABLE = Contract.TABLE_WEEK
 REDUCED_DIMENSIONS_AMOUNT = 10
 TSNE_PERPLEXITY = 30.0
 
-EDGE_REPRESENTATION_WIDTH_MULTIPLIER = 3
+EDGE_REPRESENTATION_WIDTH_MULTIPLIER = 6.0
 
 class Cluster:
 
@@ -290,8 +290,8 @@ class Cluster:
         nodes = []
         edges = []
 
-        colors = ['#3090c7', "#ADD8E6", "#800080", '#FFA500', "a52a2a",
-                    "00ff00", "FF00FF", "ffe87c", "571b7e"]
+        colors = ['#00ff66', "#00ffff", "#330099", ' #660066', "#cc0033",
+                    "#cc6600", "#ff3333", "#333366", "#333333"]
 
         cluster_colors = {}
         
@@ -311,11 +311,11 @@ class Cluster:
                             'color': cluster_colors[node[1]],
                             'x':node[2][0], 
                             'y':node[2][1],
-                            'size': 1})
+                            'size': 1 * EDGE_REPRESENTATION_WIDTH_MULTIPLIER})
 
             # use a different color for the specified hashtag
             if (node[0] == hashtag):
-                nodes[-1]['color'] = '#ffff00'
+                nodes[-1]['color'] = '#333366'
         
         counter = 0
         for edge in raw_edges:
