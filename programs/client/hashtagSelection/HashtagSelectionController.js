@@ -39,6 +39,7 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location,
         	})
         	.done(function (data) {
         		$scope.authors = JSON.parse(data).authors;
+                $scope.$digest();
         	});
         } else if ($scope.selectedAuthor != null && newVal == tweetsBy.author) {
             $scope.getTweetsByAuthor($scope.selectedAuthor);
