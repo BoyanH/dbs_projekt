@@ -1,0 +1,12 @@
+.select-pool--container {
+	margin-bottom: 30px;
+}
+
+table tr.active {
+	background-color: #c4e3f3;
+}
+
+.selection--container .options--container{
+	max-height: 300px;
+	overflow: auto;
+}

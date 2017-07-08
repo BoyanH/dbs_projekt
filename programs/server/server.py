@@ -7,10 +7,18 @@ from TableParser import TableParser
 from Cluster import Cluster
 import HashtagTimeline
 import os
+import json
+import datetime
 
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5234))
 host = '0.0.0.0'
+
+date_handler = lambda obj: (
+    obj.isoformat()
+    if isinstance(obj, (datetime.datetime, datetime.date))
+    else None
+)
 
 @app.route('/')
 def index():
@@ -59,7 +67,36 @@ def serve_static(filename):
 def clustersJSON():
     return Cluster.fromDBtoJSON()
 
+@app.route('/api/authors')
+def getAuthors():
+    authors = dbController.getAuthors()
+    print(authors)
+    return json.dumps({
 
+            "authors": authors
+
+        }, indent = 4)
+
+@app.route('/api/tweet')
+@app.route('/api/tweet/<author>')
+def getTweets(author = None):
+
+    tweets = dbController.getTweets(author)
+    return json.dumps({
+
+            "tweets": tweets
+
+        }, indent = 4, default=date_handler)
+
+@app.route('/api/hashtagsByTweet/<tweetId>')
+def getHashtagsByTweet(tweetId):
+    hashtags = dbController.getHashtagsByTweet(tweetId)
+
+    return json.dumps({
+
+            "hashtags": hashtags
+
+        }, indent = 4)
 
 if __name__ == '__main__':
 
@@ -76,3 +113,4 @@ if __name__ == '__main__':
 
 
     app.run(host=host, port=port)
+

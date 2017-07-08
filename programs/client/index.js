@@ -33,11 +33,9 @@ htViewerApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 });
 
 htViewerApp.run(function($rootScope, $location){
-    console.log('app run');
     var history = [];
 
     $rootScope.$on('$routeChangeSuccess', function() {
-        console.log('root changed');
         history.push($location.$$path);
     });
     $rootScope.history = history;

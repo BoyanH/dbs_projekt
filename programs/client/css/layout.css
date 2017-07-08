@@ -1,11 +1,26 @@
-.view-wrapper {
-
-	margin-top: 100px;
+@media (min-width: 768px) {
+	.navbar div.navbar-collapse {
+		float: right;
+	}
 }
 
-  #container {
-    max-width: 1400px;
-    height: 900px;
-    margin: auto;
-  }
+#main-wrapper {
+	padding-top: 55px;
+}
+
+.view-wrapper {
+	padding: 30px 20px; // page padding
+}
+
+@media(max-width: 480px) {
+	.view-wrapper {
+		padding: 20px 5px; // less padding on mobile
+	}
+}
+
+#container {
+max-width: 1400px;
+height: 900px;
+margin: auto;
+}
   

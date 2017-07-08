@@ -4,7 +4,6 @@ from Contract import Contract
 from Utils import Utils
 import os
 
-
 class DBController:
 
 	dbUser = os.environ.get('DB_USER_HEROKU', "testuser")
@@ -247,6 +246,46 @@ class DBController:
 
 		self.cursor.execute(sqlInsertCommand)
 
+	def getAuthors(self):
+		sqlSelect = "SELECT {0}, count(*) FROM {1} GROUP BY {2} ORDER BY count(*)"
+		sqlCommand = sqlSelect.format(
+			Contract.AUTHOR_COLUMN,
+			Contract.TABLE_TWEET,
+			Contract.AUTHOR_COLUMN
+		)
+
+		self.cursor.execute(sqlCommand)
+		return [ [x[0], x[1]] for x in self.cursor.fetchall()]
+
+	def getTweets(self, author=None):
+		sqlSelect = "SELECT {0} FROM {1}" +  (" WHERE {2} = '{3}' and {4} = {5} " if author != None else "") + "GROUP BY {6} ORDER BY {7} DESC"
+		sqlCommand = sqlSelect.format(
+			', '.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN, Contract.HASHTAG_TEXT_COLUMN]), # SELECT
+			','.join([Contract.TABLE_TWEET, Contract.TABLE_CONTAINS]),
+			Contract.AUTHOR_COLUMN, author, Contract.TWEET_ID_COLUMN, Contract.ID_COLUMN,
+			','.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN, Contract.HASHTAG_TEXT_COLUMN]), 
+			'count(*)'
+		)
+
+		self.cursor.execute(sqlCommand)
+		return [ [str(z) for z in x][:4] for x in self.cursor.fetchall()]
+
+	def getHashtagsByTweet(self, tweetId):
+		sqlSelect = "SELECT {0} FROM {1} WHERE {2} ORDER BY {3}"
+		sqlCommand = sqlSelect.format(
+			','.join([Contract.TEXT_LOWER_CASE_COLUMN, Contract.COUNT_COLUMN]),					# SELECT
+			','.join([Contract.TABLE_HASHTAG, Contract.TABLE_TWEET, Contract.TABLE_CONTAINS]),	# FROM
+			"{0} = {1} AND {2} = {3} AND {4} = '{5}'".format(									# WHERE
+					Contract.HASHTAG_TEXT_COLUMN, Contract.TEXT_LOWER_CASE_COLUMN,
+					Contract.TWEET_ID_COLUMN, Contract.ID_COLUMN,
+					Contract.TWEET_ID_COLUMN, tweetId
+				),
+			Contract.COUNT_COLUMN 																# ORDER BY
+		)
+
+		self.cursor.execute(sqlCommand)
+		print(sqlCommand)
+		return [ [z for z in x] for x in self.cursor.fetchall()]
 
 	@staticmethod
 	def getWhereConditionsForUpdate(columnsDict):

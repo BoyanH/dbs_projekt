@@ -53,7 +53,7 @@ class Extractor:
 				try:
 					crntHashtagEnd = re.search('[^a-zA-Z0-9]', text[(crntHashtagStart):]).start() + crntHashtagStart
 				except AttributeError as atrErr:
-					crntHashtagEnd = len(text) - 1
+					crntHashtagEnd = len(text)
 
 				crntHashtag = text[crntHashtagStart:crntHashtagEnd].lower()
 				searchedUntil = crntHashtagEnd
