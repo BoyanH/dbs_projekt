@@ -256,7 +256,29 @@ class DBController:
         )
 
         self.cursor.execute(sqlCommand)
-        print(sqlCommand)
+        return [ [z for z in x] for x in self.cursor.fetchall()]
+
+    def getTopHashtags(self):
+        sqlSelect = "SELECT {0} FROM {1} ORDER BY {2} DESC"
+        sqlCommand = sqlSelect.format(
+            ','.join([Contract.TEXT_LOWER_CASE_COLUMN, Contract.COUNT_COLUMN]),
+            Contract.TABLE_HASHTAG,
+            Contract.COUNT_COLUMN
+        )
+
+        self.cursor.execute(sqlCommand)
+        return [ [z for z in x] for x in self.cursor.fetchall()]
+
+    def getHashtagsByText(self, text):
+        sqlSelect = "SELECT {0} FROM {1} WHERE {2} SIMILAR TO {3} ORDER BY {4} DESC"
+        sqlCommand = sqlSelect.format(
+            ','.join([Contract.TEXT_LOWER_CASE_COLUMN, Contract.COUNT_COLUMN]),
+            Contract.TABLE_HASHTAG,
+            Contract.TEXT_LOWER_CASE_COLUMN, "'%{}%'".format(text),
+            Contract.COUNT_COLUMN
+        )
+
+        self.cursor.execute(sqlCommand)
         return [ [z for z in x] for x in self.cursor.fetchall()]
 
 

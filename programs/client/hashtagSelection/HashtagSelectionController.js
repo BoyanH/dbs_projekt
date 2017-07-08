@@ -18,15 +18,18 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
 	$scope.tweetsBy = tweetsBy.author;
 	$scope.hashtagsBy = hashtagsBy.popularity;
 
-	$scope.$watch('hashtagsBy', function() {
-        
-        if ($scope.hashtagsBy === hashtagsBy.popularity) {
-        	getMostPopularHashtags();
+	$scope.setPool =  function(pool) {
+        $scope.fromPool = pool;
+        if (pool === pools.tweets) {
+        	$scope.setTweetBy($scope.tweetsBy);
+        } else {
+            $scope.setHashtagsBy($scope.hashtagsBy);
         }
-    });
+    };
 
-    $scope.$watch('tweetsBy', function() {
-        
+    $scope.setTweetBy = function(newVal) {
+        $scope.tweetsBy = newVal;
+
         if ($scope.authors == null) {
         	$.ajax({
         		method: 'GET',
@@ -35,8 +38,22 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
         	.done(function (data) {
         		$scope.authors = JSON.parse(data).authors;
         	});
+        } else if ($scope.selectedAuthor != null && newVal == tweetsBy.authors) {
+            $scope.getTweetsByAuthor();
+        } else if ($scope.selectedDates != null && newVal == tweetsBy.date) {
+            $scope.getTweetsByDates();
         }
-    });
+    };
+
+    $scope.setHashtagsBy = function(newVal) {
+        $scope.hashtagsBy = newVal;
+
+        if (newVal == hashtagsBy.popularity || !newVal) {
+            getMostPopularHashtags();
+        } else if($scope.searchWord != null) {
+            $scope.getHashtagsBySearch($scope.searchWord);
+        }
+    }
 
     $scope.getTweetsByAuthor = function (author) {
     	$scope.selectedAuthor = author;
@@ -47,7 +64,6 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
     	})
     	.done(function (data) {
     		$scope.tweets = JSON.parse(data).tweets.slice(0, 100); // show only first 100 tweets
-            console.log($scope.tweets[2][3]);
     		$scope.$digest();
     	});
     }
@@ -64,7 +80,27 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
     	});
     }
 
-    function getMostPopularHashtags() {
-    	// get most popular, export to $scope.hashtags...
+    $scope.getHashtagsBySearch = function(word) {
+        $.ajax({
+            method: 'GET',
+            url: '/api/searchHashtags/' + word
+        })
+        .done(function (data) {
+            $scope.hashtags = JSON.parse(data).hashtags.slice(0, 30);
+            $scope.$digest();
+        });
     }
+
+    function getMostPopularHashtags() {
+        $.ajax({
+            method: 'GET',
+            url: '/api/getTopHashtags'
+        })
+        .done(function (data) {
+            $scope.hashtags = JSON.parse(data).hashtags.slice(0, 30);
+            $scope.$digest();
+        });
+    }
+
+    $scope.setPool($scope.fromPool);
 });

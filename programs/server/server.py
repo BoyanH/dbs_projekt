@@ -99,6 +99,26 @@ def getHashtagsByTweet(tweetId):
 
         }, indent = 4)
 
+@app.route('/api/getTopHashtags')
+def getTopHashtags():
+    hashtags = dbController.getTopHashtags()
+
+    return json.dumps({
+
+            "hashtags": hashtags
+
+        }, indent = 4)
+
+@app.route('/api/searchHashtags/<hashtagText>')
+def searchHashtags(hashtagText):
+    hashtags = dbController.getHashtagsByText(hashtagText);
+
+    return json.dumps({
+
+            "hashtags": hashtags if hashtags != None else []
+
+        }, indent = 4)
+
 if __name__ == '__main__':
 
 	dbController = DBController()

@@ -1,15 +1,15 @@
 <div class="hashtag-selection-panel">
 	<ul class="nav nav-tabs select-pool--container">
-	  <li role="presentation" ng-class="{ active: fromPool == 'tweets' }" ng-click="fromPool = 'tweets'"><a href="#">By Tweet</a></li>
-	  <li role="presentation" ng-class="{ active: fromPool == 'hashtags' }" ng-click="fromPool = 'hashtags'"><a href="#">From all hashtags</a></li>
+	  <li role="presentation" ng-class="{ active: fromPool == 'tweets' }" ng-click="setPool('tweets')"><a href="#">By Tweet</a></li>
+	  <li role="presentation" ng-class="{ active: fromPool == 'hashtags' }" ng-click="setPool('hashtags')"><a href="#">From all hashtags</a></li>
 	</ul>
 
 	<hr>
 
 	<div class="select-from-tweets--container" ng-show="fromPool == 'tweets'">
 		<ul class="nav nav-tabs">
-		  <li role="presentation" ng-class="{ active: tweetsBy == 'author' }" ng-click="tweetsBy = 'author'"><a href="#">By Author</a></li>
-		  <li role="presentation" ng-class="{ active: tweetsBy == 'date' }" ng-click="tweetsBy = 'date'"><a href="#">By Date</a></li>
+		  <li role="presentation" ng-class="{ active: tweetsBy == 'author' }" ng-click="setTweetBy('author')"><a href="#">By Author</a></li>
+		  <li role="presentation" ng-class="{ active: tweetsBy == 'date' }" ng-click="setTweetBy('date')"><a href="#">By Date</a></li>
 		</ul>
 
 		<div class="tweets-selection--container selection--container" ng-show="tweetsBy == 'author' && authors != null">
@@ -39,15 +39,15 @@
 
 	<div class="select-from-hashtags--container" ng-show="fromPool == 'hashtags'">
 		<ul class="nav nav-tabs">
-		  <li role="presentation" ng-class="{ active: hashtagsBy == 'popularity' }" ng-click="hashtagsBy = 'popularity'"><a href="#">Most Popular</a></li>
-		  <li role="presentation" ng-class="{ active: hashtagsBy == 'text' }" ng-click="hashtagsBy = 'text'"><a href="#">Search</a></li>
+		  <li role="presentation" ng-class="{ active: hashtagsBy == 'popularity' }" ng-click="setHashtagsBy('popularity')"><a href="#">Most Popular</a></li>
+		  <li role="presentation" ng-class="{ active: hashtagsBy == 'text' }" ng-click="setHashtagsBy('text')"><a href="#">Search</a></li>
 		</ul>
 
 		<div class="well"  ng-show="hashtagsBy == 'text'">
 	    <div class="input-group">
-	      <input type="text" class="form-control" placeholder="hashtag">
+	      <input type="text" class="form-control" placeholder="hashtag" ng-model="searchWord">
 	      <span class="input-group-btn">
-	        <button class="btn btn-default" type="button">Search</button>
+	        <button class="btn btn-default" type="button" ng-click="getHashtagsBySearch(searchWord)">Search</button>
 	      </span>
 	    </div><!-- /input-group -->
 	  </div>
