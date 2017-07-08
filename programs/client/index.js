@@ -17,15 +17,16 @@ htViewerApp.config(function($routeProvider, $locationProvider, $httpProvider) {
         })
 
         // route for the about page
-        .when('/clustering', {
+        .when('/clustering/:selectedHashtag?', {
             templateUrl : '/public/clustering/clustering.html',
             controller  : 'ClusteringController'
         })
 
         // route for the contact page
-        .when('/timeline', {
+        .when('/timeline/:selectedHashtag?', {
             templateUrl : '/public/timeline/timeline.html',
-            controller  : 'TimeLineController'
+            controller  : 'TimeLineController',
+            reloadOnSearch: false
         }).otherwise({redirectTo:'/'});
 
         // use the HTML5 History API
@@ -40,3 +41,17 @@ htViewerApp.run(function($rootScope, $location){
     });
     $rootScope.history = history;
 });
+
+htViewerApp.run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+    var original = $location.path;
+    $location.path = function (path, reload) {
+        if (reload === false) {
+            var lastRoute = $route.current;
+            var un = $rootScope.$on('$locationChangeSuccess', function () {
+                $route.current = lastRoute;
+                un();
+            });
+        }
+        return original.apply($location, [path]);
+    };
+}])

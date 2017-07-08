@@ -1,1 +1,22 @@
-<div id="container"></div>
+<div class="row view-row">
+	<div class="col col-md-6">
+		<div class="panel panel-info">
+		    <div class="panel-heading">
+		    	<span class="represent-by-title" ng-show="selectedHashtag != null">For #{{ selectedHashtag }}</span>
+		    	<span class="represent-by-title" ng-show="selectedHashtag == null">For all hashtags</span>
+		    </div>
+		    <div class="panel-body">
+		    	<h3>View the relativity of hashtags to each other</h3>
+				<div id="clustering-container"></div>
+		    </div>
+		</div>
+	</div>
+	<div class="col col-md-6">
+		<div class="panel panel-default">
+		    <div class="panel-heading">Select Hashtag</div>
+		    <div class="panel-body">
+		    	<div ng-include="'public/hashtagSelection/hashtagSelection.html'" ng-controller="HashtagSelectionController"></div>
+		    </div>
+		</div>
+	</div>
+</div>

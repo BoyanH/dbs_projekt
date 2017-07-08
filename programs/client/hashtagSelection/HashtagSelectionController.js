@@ -1,8 +1,9 @@
-htViewerApp.controller('HashtagSelectionController', function($scope, $location) {
+htViewerApp.controller('HashtagSelectionController', function($scope, $location, $rootScope) {
         
     var pools = {
     	tweets: 'tweets',
-    	hashtags: 'hashtags'
+    	hashtags: 'hashtags',
+        allHashtags: 'allHashtags'
     };
     var tweetsBy = {
     	author: 'author',
@@ -22,14 +23,15 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
         $scope.fromPool = pool;
         if (pool === pools.tweets) {
         	$scope.setTweetBy($scope.tweetsBy);
-        } else {
+        } else if (pool === pools.hashtags){
             $scope.setHashtagsBy($scope.hashtagsBy);
+        } else {
+            $scope.selectHashtag(null);
         }
     };
 
     $scope.setTweetBy = function(newVal) {
         $scope.tweetsBy = newVal;
-
         if ($scope.authors == null) {
         	$.ajax({
         		method: 'GET',
@@ -38,8 +40,8 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
         	.done(function (data) {
         		$scope.authors = JSON.parse(data).authors;
         	});
-        } else if ($scope.selectedAuthor != null && newVal == tweetsBy.authors) {
-            $scope.getTweetsByAuthor();
+        } else if ($scope.selectedAuthor != null && newVal == tweetsBy.author) {
+            $scope.getTweetsByAuthor($scope.selectedAuthor);
         } else if ($scope.selectedDates != null && newVal == tweetsBy.date) {
             $scope.getTweetsByDates();
         }
@@ -66,6 +68,10 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
     		$scope.tweets = JSON.parse(data).tweets.slice(0, 100); // show only first 100 tweets
     		$scope.$digest();
     	});
+
+        if ($scope.selectedTweet) {
+            $scope.getHashtagsByTweet($scope.selectedTweet);
+        }
     }
 
     $scope.getHashtagsByTweet = function(tweetId) {
@@ -89,6 +95,11 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location)
             $scope.hashtags = JSON.parse(data).hashtags.slice(0, 30);
             $scope.$digest();
         });
+    }
+
+    $scope.selectHashtag = function(hashtag) {
+        $scope.selectedHashtag = hashtag;
+        $scope.$parent.hashtagSelected(hashtag);
     }
 
     function getMostPopularHashtags() {

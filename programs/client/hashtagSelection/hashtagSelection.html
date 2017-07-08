@@ -2,6 +2,7 @@
 	<ul class="nav nav-tabs select-pool--container">
 	  <li role="presentation" ng-class="{ active: fromPool == 'tweets' }" ng-click="setPool('tweets')"><a href="#">By Tweet</a></li>
 	  <li role="presentation" ng-class="{ active: fromPool == 'hashtags' }" ng-click="setPool('hashtags')"><a href="#">From all hashtags</a></li>
+	  <li role="presentation" ng-class="{ active: fromPool == 'allHashtags' }" ng-click="setPool('allHashtags')"><a href="#">For all Hashtags</a></li>
 	</ul>
 
 	<hr>
@@ -77,19 +78,23 @@
 		</div>
 	</div>
 
-	<div class="hashtags-selection--container selection--container" ng-show="hashtags != null">
+	<div class="hashtags-selection--container selection--container" ng-show="hashtags != null && fromPool != 'allHashtags'">
 		<h4>Hashtags</h4>
 		<div class="options--container">
 			<table class="table">
 		    <tbody>
 		        <tr ng-repeat="row in hashtags">
 		            <td ng-class="{ active: selectedHashtag == row }" ng-repeat="col in row">{{col}}</td>
+		            <td ng-click="$parent.selectHashtag(row[0])">
+				            	<button type="button" class="btn btn-default">Select</button>
+				            </td>
 		        </tr>    
 		    </tbody>
 		    <thead>
 			    	<tr>
 		    			<th>Text</th>
 		    			<th>Times used</th>
+		    			<th></th>
 		    		</tr>
 		    </thead>
 		</table>

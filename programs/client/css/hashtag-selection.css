@@ -10,3 +10,7 @@ table tr.active {
 	max-height: 300px;
 	overflow: auto;
 }
+
+.usage--container img {
+	width: 100%;
+}

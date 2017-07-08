@@ -20,23 +20,6 @@ date_handler = lambda obj: (
     else None
 )
 
-@app.route('/')
-def index():
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
-
-@app.route('/clustering')
-def clustering():
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	print(os.path.join(dir_path, '../client'));
-	return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
-
-@app.route('/timeline')
-def timeline():
-	dir_path = os.path.dirname(os.path.realpath(__file__))
-	print(os.path.join(dir_path, '../client'));
-	return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
-
 @app.route('/topTweets')
 def getTopTweets():
 	topTweets = dbController.getTopTweets()
@@ -118,6 +101,11 @@ def searchHashtags(hashtagText):
             "hashtags": hashtags if hashtags != None else []
 
         }, indent = 4)
+
+@app.errorhandler(404)
+def index(err):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    return send_from_directory(os.path.join(dir_path, '../client'), 'index.html')
 
 if __name__ == '__main__':
 

@@ -2,10 +2,27 @@
 	<div class="col col-md-6">
 		<div class="panel panel-info">
 		    <div class="panel-heading">
-		    	<span class="represent-by-title" ng-if="selectedHashtag !== null">For hashtag "{{ selectedHashtag }}"</span>
-		    	<span class="represent-by-title" ng-if="selectedHashtag !== null">For all hashtags</span>
+		    	<span class="represent-by-title" ng-show="selectedHashtag != null">For #{{ selectedHashtag }}</span>
+		    	<span class="represent-by-title" ng-show="selectedHashtag == null">For all hashtags</span>
 		    </div>
-		    <div class="panel-body">Panel Content</div>
+		    <div class="panel-body">
+		    	<h3>View the usage of hashtags during the time</h3>
+		    	<ul class="nav nav-tabs select-pool--container">
+				  <li role="presentation" ng-class="{ active: usage == 'daily' }" ng-click="setUsage('daily')"><a href="#">Daily</a></li>
+				  <li role="presentation" ng-class="{ active: usage == 'weekly' }" ng-click="setUsage('weekly')"><a href="#">Weekly</a></li>
+				</ul>
+				
+				<div class="daily-usage--container usage--container" ng-show="usage == 'daily'">
+					<img ng-src="/hashtag/daily/{{selectedHashtag}}" alt="" ng-show="selectedHashtag != null">
+					<img src="/hashtag/daily" alt="" ng-show="selectedHashtag == null">
+				</div>
+
+				<div class="weekly-usage--container usage--container" ng-show="usage == 'weekly'">
+					<img ng-src="/hashtag/weekly/{{selectedHashtag}}" alt="" ng-show="selectedHashtag != null">
+					<img src="/hashtag/weekly" alt="" ng-show="selectedHashtag == null">
+				</div>
+
+		    </div>
 		</div>
 	</div>
 	<div class="col col-md-6">
