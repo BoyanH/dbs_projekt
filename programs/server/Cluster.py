@@ -69,6 +69,7 @@ class Cluster:
         self.dBController.connection.commit()
 
         for ht in self.clustersForHt:
+            print(self.clustersForHt[ht])
             centerId = self.dBController.getClusterCenterId(self.clustersForHt[ht])
             self.dBController.addHashtagToCluster(ht, centerId)
             self.clusterIDForHT[ht] = centerId
@@ -174,11 +175,14 @@ class Cluster:
         shouldContiune = True
 
         while shouldContiune:
-            clusterForHt = self.updateHashtagsInClusters()
             oldCenters = self.clusterCenters
+            clusterForHt = self.updateHashtagsInClusters()
             self.clusterCenters = Cluster.calculateNewClusterCenters(clusterForHt, self.clusterCenters, self.htVectors)
 
             shouldContiune = Cluster.getKMeansShouldContinue(oldCenters, self.clusterCenters)
+
+        # one last time, remember to assign clusters to their centers, they could have changed, just not enough for another loop
+        clusterForHt = self.updateHashtagsInClusters()
 
         return clusterForHt
 
