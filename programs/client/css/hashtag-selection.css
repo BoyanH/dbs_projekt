@@ -14,3 +14,16 @@ table tr.active {
 .usage--container img {
 	width: 100%;
 }
+
+.selection--container .nav {
+	margin-bottom: 30px;
+}
+
+.date-selection {
+	height: 100px;
+}
+
+.options--container td {
+	max-width: 148px;
+	word-break: break-all;
+}

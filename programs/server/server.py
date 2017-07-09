@@ -5,6 +5,7 @@ from cleaner import cleanData
 from DBController import DBController
 from TableParser import TableParser
 from Cluster import Cluster
+from Extractor import Extractor
 import HashtagTimeline
 import os
 import json
@@ -72,6 +73,18 @@ def getTweets(author = None):
 
         }, indent = 4, default=date_handler)
 
+@app.route('/api/tweetByDate/<startDate>/<endDate>')
+def getTweetsBetwenDates(startDate, endDate):
+    dotIndex = startDate.index('.')
+    startDateParsed = datetime.datetime.strptime(startDate[:dotIndex], Extractor.TIME_FORMAT)
+    endDateParsed = datetime.datetime.strptime(endDate[:dotIndex], Extractor.TIME_FORMAT)
+    tweets = dbController.getTweetsBetwenDates(startDateParsed, endDateParsed)
+    return json.dumps({
+
+            "tweets": tweets
+
+        }, indent = 4, default=date_handler)
+
 @app.route('/api/hashtagsByTweet/<tweetId>')
 def getHashtagsByTweet(tweetId):
     hashtags = dbController.getHashtagsByTweet(tweetId)
@@ -121,3 +134,4 @@ if __name__ == '__main__':
         print('Data already imported :)')
 
     app.run(host=host, port=port)
+extractTime

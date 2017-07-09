@@ -7,7 +7,7 @@
 
 	<hr>
 
-	<div class="select-from-tweets--container" ng-show="fromPool == 'tweets'">
+	<div class="select-from-tweets--container selection--container" ng-show="fromPool == 'tweets'">
 		<ul class="nav nav-tabs">
 		  <li role="presentation" ng-class="{ active: tweetsBy == 'author' }" ng-click="setTweetBy('author')"><a href="#">By Author</a></li>
 		  <li role="presentation" ng-class="{ active: tweetsBy == 'date' }" ng-click="setTweetBy('date')"><a href="#">By Date</a></li>
@@ -36,12 +36,26 @@
 			</div>
 			<hr>
 		</div>
+
+		<div class="date-selection--container selection--container" ng-show="tweetsBy == 'date'">
+			<div class="col-md-12">
+				<label for="start-date">Posted after</label>
+				<input class="pull-right" id="start-date" type="date" ng-model="startDate">
+			</div>
+			<div class="col-md-12">
+				<label for="end-date">Posted before</label>
+				<input class="pull-right" id="end-date" type="date" ng-model="endDate">
+			</div>
+			<div class="col-md-12">
+				<button type="button" class="btn btn-default" ng-click="getTweetsByDates(startDate, endDate)">Search</button>
+			</div>
+		</div>
 	</div>
 
 	<div class="select-from-hashtags--container" ng-show="fromPool == 'hashtags'">
 		<ul class="nav nav-tabs">
 		  <li role="presentation" ng-class="{ active: hashtagsBy == 'popularity' }" ng-click="setHashtagsBy('popularity')"><a href="#">Most Popular</a></li>
-		  <li role="presentation" ng-class="{ active: hashtagsBy == 'text' }" ng-click="setHashtagsBy('text')"><a href="#">Search</a></li>
+		  <li role="presentation" ng-class="{ active: hashtagsBy == 'text' }" ng-click="setHashtagsBy('text')"><a>Search</a></li>
 		</ul>
 
 		<div class="well"  ng-show="hashtagsBy == 'text'">

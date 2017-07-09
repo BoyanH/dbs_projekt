@@ -43,7 +43,7 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location,
         	});
         } else if ($scope.selectedAuthor != null && newVal == tweetsBy.author) {
             $scope.getTweetsByAuthor($scope.selectedAuthor);
-        } else if ($scope.selectedDates != null && newVal == tweetsBy.date) {
+        } else if ($scope.startDate != null && newVal == tweetsBy.date) {
             $scope.getTweetsByDates();
         }
     };
@@ -69,6 +69,30 @@ htViewerApp.controller('HashtagSelectionController', function($scope, $location,
     		$scope.tweets = JSON.parse(data).tweets.slice(0, 100); // show only first 100 tweets
     		$scope.$digest();
     	});
+
+        if ($scope.selectedTweet) {
+            $scope.getHashtagsByTweet($scope.selectedTweet);
+        }
+    }
+
+    $scope.getTweetsByDates = function(startDate, endDate) {
+        $scope.startDate = startDate;
+        $scope.endDate = endDate;
+
+        if ($scope.startDate > $scope.endDate) {
+            var temp = $scope.startDate;
+            $scope.startDate = $scope.endDate;
+            $scope.endDate = temp;
+        }
+
+        $.ajax({
+            method: 'GET',
+            url: '/api/tweetByDate/' + $scope.startDate.toJSON() + '/' + $scope.endDate.toJSON()
+        })
+        .done(function (data) {
+            $scope.tweets = JSON.parse(data).tweets.slice(0, 100); // show only first 100 tweets
+            $scope.$digest();
+        });
 
         if ($scope.selectedTweet) {
             $scope.getHashtagsByTweet($scope.selectedTweet);

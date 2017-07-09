@@ -230,11 +230,24 @@ class DBController:
         return [ [x[0], x[1]] for x in self.cursor.fetchall()]
 
     def getTweets(self, author=None):
-        sqlSelect = "SELECT {0} FROM {1}" +  (" WHERE {2} = '{3}' and {4} = {5} " if author != None else "") + "GROUP BY {6} ORDER BY {7} DESC"
+        sqlSelect = "SELECT {0} FROM {1} WHERE {2} = '{3}'" +  (" and {4} = {5} " if author != None else "") + "GROUP BY {6} ORDER BY {7} DESC"
         sqlCommand = sqlSelect.format(
             ', '.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN, Contract.HASHTAG_TEXT_COLUMN]), # SELECT
             ','.join([Contract.TABLE_TWEET, Contract.TABLE_CONTAINS]),
             Contract.AUTHOR_COLUMN, author, Contract.TWEET_ID_COLUMN, Contract.ID_COLUMN,
+            ','.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN, Contract.HASHTAG_TEXT_COLUMN]), 
+            'count(*)'
+        )
+
+        self.cursor.execute(sqlCommand)
+        return [ [str(z) for z in x][:4] for x in self.cursor.fetchall()]
+
+    def getTweetsBetwenDates(self, startDate, endDate):
+        sqlSelect = "SELECT {0} FROM {1} WHERE {2} = {3} AND {4} >= '{5}' AND {4} <= '{6}' GROUP BY {7} ORDER BY {8} DESC"
+        sqlCommand = sqlSelect.format(
+            ', '.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN]), # SELECT
+            ','.join([Contract.TABLE_TWEET, Contract.TABLE_CONTAINS]),
+            Contract.TWEET_ID_COLUMN, Contract.ID_COLUMN, Contract.TIME_COLUMN, startDate, endDate,
             ','.join([Contract.AUTHOR_COLUMN, Contract.TEXT_COLUMN, Contract.TIME_COLUMN, Contract.ID_COLUMN, Contract.HASHTAG_TEXT_COLUMN]), 
             'count(*)'
         )
