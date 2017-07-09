@@ -28,7 +28,7 @@ Link zur Webseite: \url{https://election-data-mining.herokuapp.com/}
 
 \item Ähnlichkeitsmetrik
 
-Um die gemeinsamkeit je 2 Hashtags zu berechnen, haben wir zwei Metriken genommen. Erstens ist es für uns wichtig, wie oft zwei Hashtags gemeinsam zusammen vorkommen und zweitens, wie oft diese in der selben Woche benutzt werden. So können wir beide Hashtags mit equivalente Bedeutungen als auch zu einander offensive Hashtags zusammenfassen. Wenn es ein Trend in einer Woche gibt, dann werden alle zu diesem Trend relevante Hashtags in der selben Woche benutzt, aber nicht unbedingt zusammen, da oft nur ein Paar Hashtags per Tweet benutzt werden, und nicht alle, die zu dem Thema relevant sind. Wenn zwei Hashtags aber doch nur zusammen vorkommen, muss das als eine stärkere Bindung markiert werden, deswegen reicht das Datum alleine nicht.
+Um die Gemeinsamkeit je 2 Hashtags zu berechnen, haben wir zwei Metriken genommen. Erstens ist es für uns wichtig, wie oft zwei Hashtags gemeinsam vorkommen und zweitens, wie oft diese in der selben Woche benutzt worden sind. So können wir beide Hashtags mit equivalenten Bedeutungen als auch zu einander offensive Hashtags zusammenfassen. Wenn es ein Trend in einer Woche gibt, dann werden alle zu diesem Trend relevante Hashtags in der selben Woche benutzt, aber nicht unbedingt zusammen, da oft nur ein Paar Hashtags per Tweet benutzt werden, und nicht alle, die zu dem Thema relevant sind. Wenn zwei Hashtags aber doch nur zusammen vorkommen, muss das als eine stärkere Bindung markiert werden, deswegen reicht das Datum alleine nicht.
 
 \item Clustering
 
@@ -38,7 +38,7 @@ So werden Hashtags, die in der selben Wochen benutzt werden, in der selben Dimen
 
 \item Curse of Dimensionality
 
-Wir könnte aber leider ohne weiteres K-Means nicht erfolgreich auf der so konstruierten Vektorraum verwenden. Das liegt daran, dass unsere Daten in einer so großen Anzahl von Dimensionen sehr Sparse werden und dabei den euklidischen Abstand zwischen den enzigen Elemente stark abnimmt, so dass wir am Ende ein rießengroßen Cluster bekommen, wo fast alle Hashtags gesammelt werden, da diese nicht mehr so deutlich von einander unterscheidbar sind.
+Wir könnten aber leider ohne weiteres K-Means nicht erfolgreich auf der so konstruierten Vektorraum verwenden. Das liegt daran, dass unsere Daten in einer so großen Anzahl von Dimensionen sehr Sparse werden und dabei den euklidischen Abstand zwischen den enzigen Elemente stark abnimmt, so dass wir am Ende ein rießengroßen Cluster bekommen, wo fast alle Hashtags gesammelt werden, da diese nicht mehr so deutlich von einander unterscheidbar sind.
 
 Als in der Bücher erklärt, wächst zusammen mit der Anzahl von Dimensionen auch der Anteil von Kantenlängen eines Hyperwürfels, um bestimmten Anteil des Hyperwürfels abzudecken. Damit nimmt die Ähnlichkeit im Sinne von euklidischen Abstand zwischen der einzelnen Punkte mit der Anzahl von Dimensionen drastisch ab. Deswegen werden im unserem Fall mehrere Punkte im selben Cluster gesammelt, obwohl die eigentlich nicht so nah sein dürfen.
 
@@ -66,13 +66,16 @@ Weiter haben wir für die Implementierung die Bibliothek Numpy benutzt, um leich
 
 Für den 'Maximum bang for the buck' haben wir für die Front-End Seite AngularJS zusammen mit Bootstrap genommen, da beide minimale Konfiguration erfordern und gute Leistung anbieten. AngularJS hat uns geholfen eine modernere Single-Page-Application entwickeln zu können und leichter Daten aus unserer API auf der HTML Seiten visualizieren zu können, mit Hilfe von Templates und 2-way-data-binding. Die Architektur ist natürlich für großere Projekten nicht so effizient, für unsere kleine Anwendung finden wir aber die Entscheidung ganz gut. Bootstrap ist ein CSS Framework, dass uns erlaubt hat, fast kein CSS zu schreiben und trotzdem schönes Endergebniss zu bekommen, damit sehen auch alle unsere UI Elemente einheitlich aus. \\
 
-Wir haben gesehen, dass die Bibliothek 'SigmaJS' leicht mit JSON Dateien arbeitet, deswegen hatten wir keine Schwierigkeiten die Daten, die wir schon in dem Datenbank gespeichert haben, über Ajax Anfragen zu den Klient zu transportieren. \\ 
+Wir haben gesehen, dass die Bibliothek 'SigmaJS' leicht mit JSON Dateien arbeitet, deswegen hatten wir keine Schwierigkeiten die Daten, die wir schon in dem Datenbank gespeichert haben, über Ajax Anfragen zu den Klient zu transportieren. Außerdem ist Python sehr gut dazu geeignet, interne Datenstrukturen in JSON Format zu konvertieren. \\ 
 
 Für die Visualisierung haben wir uns entschieden, stärkere Beziehungen zwischen Hashtags mit dickeren Kanten darzustellen. Dabei wurde schon ein Constraint in der Aufgabenstellung gegeben, und nämlich das zwei Hashtags, die nie mit einander zusammen benutzt wurden, nicht mit einer Kante verbindet sein dürfen. Wir haben ein weiteres Constraint eingefügt, dass das auch für zwei Hashtags gilt, die sich nicht in dem selben Cluster befinden. Die verschiedene Farben bezeichnen bei uns auch die verschiedene 7 Cluster.
 
 \item Visualisierung von der Häufigkeit
 
 Für die Visualisierung der Häufigkeit haben wir die Bibliothek Mathplotlib benutzt. Wir haben schon in der letzten Projektiteration eine Tabelle eingeführt, wo gespeichert wird, in welchen Wochen ein Hashtag benutzt wurde und wie oft. Anhand von der existierenden Implementierung haben wir das selbe auch für die einzelne Tage gemacht und dann anhand davon die Visualisierung gemacht. Da wir auch eine Tabelle für die Wochen haben, haben wir den Nutzer die Möglichkeit gegeben, die gewünschte Einheit zu wählen.
+
+Um konkreter über die Implemetierung zu sprechen, haben wir ganz einfach Säulendiagrammen mithilfe von matplotlib erstellt. Wir meinten es würde besser aussehen, wenn nicht jeder eintrag auf der X-Achse zu beschriften, sondern jeder vierte Position. (z.B Tag 1, Tag 5, Tag 8 usw.). Danach haben wir das Diagramm in einer .png Datei konvertiert. Wir müssten das nicht speichern, sondern wir haben das Bild als Binary-Objekt an das Front-end übergegeben mit dem Tag 'Image/png'. So könnten wir dynamisch Bilder vom Server abzufragen, ohne zusätzliche Speicherplatz zu verwenden.
+
 
 \end{enumerate}
 
